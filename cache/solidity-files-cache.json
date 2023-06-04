@@ -11,6 +11,46 @@
     ]
   },
   "files": {
+    "lib/chainlink-brownie-contracts/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol": {
+      "lastModificationDate": 1685912145414,
+      "contentHash": "b9be3f7aa79153708acdc3be6bd1cb35",
+      "sourceName": "lib/chainlink-brownie-contracts/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "metadata": {
+            "bytecodeHash": "ipfs",
+            "appendCBOR": true
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ]
+            }
+          },
+          "evmVersion": "london",
+          "libraries": {}
+        }
+      },
+      "imports": [],
+      "versionRequirement": "^0.8.0",
+      "artifacts": {
+        "AggregatorV3Interface": {
+          "0.8.19+commit.7dd6d404.Darwin.appleclang": "AggregatorV3Interface.sol/AggregatorV3Interface.json"
+        }
+      }
+    },
     "lib/openzeppelin-contracts/contracts/access/Ownable.sol": {
       "lastModificationDate": 1685906819307,
       "contentHash": "6700fcb5decd824189c59095d47a3588",
@@ -305,8 +345,8 @@
       }
     },
     "src/core/DSCEngine.sol": {
-      "lastModificationDate": 1685911514987,
-      "contentHash": "998820209229653a76e14fb0b7121b1b",
+      "lastModificationDate": 1685916467422,
+      "contentHash": "beca5ad5c0a2f3cf9d39d8fd6d948f9e",
       "sourceName": "src/core/DSCEngine.sol",
       "solcConfig": {
         "settings": {
@@ -337,9 +377,12 @@
         }
       },
       "imports": [
+        "lib/chainlink-brownie-contracts/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol",
         "lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol",
+        "lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol",
         "src/interface/IDSCEngine.sol",
-        "src/interface/IDecenttializedStableCoin.sol"
+        "src/interface/IDecenttializedStableCoin.sol",
+        "src/lib/OracleLib.sol"
       ],
       "versionRequirement": "=0.8.19",
       "artifacts": {
@@ -349,8 +392,8 @@
       }
     },
     "src/core/DecenttializedStableCoin.sol": {
-      "lastModificationDate": 1685910884027,
-      "contentHash": "93c1e01a18d577c144f3a3d42efc5b3c",
+      "lastModificationDate": 1685912455660,
+      "contentHash": "dbb22791062fcbbdf98c4cb37b2d2289",
       "sourceName": "src/core/DecenttializedStableCoin.sol",
       "solcConfig": {
         "settings": {
@@ -397,8 +440,8 @@
       }
     },
     "src/interface/IDSCEngine.sol": {
-      "lastModificationDate": 1685911195386,
-      "contentHash": "9585615846c018c3eaf4a1d709bdefe4",
+      "lastModificationDate": 1685914069731,
+      "contentHash": "54e82d66047a3a3c223a22b825756ee8",
       "sourceName": "src/interface/IDSCEngine.sol",
       "solcConfig": {
         "settings": {
@@ -513,6 +556,48 @@
       "artifacts": {
         "DSCEngineHelper": {
           "0.8.19+commit.7dd6d404.Darwin.appleclang": "DSCEngineHelper.sol/DSCEngineHelper.json"
+        }
+      }
+    },
+    "src/lib/OracleLib.sol": {
+      "lastModificationDate": 1685912455660,
+      "contentHash": "7e41791daaeee95ef10b5181979e2ee5",
+      "sourceName": "src/lib/OracleLib.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "metadata": {
+            "bytecodeHash": "ipfs",
+            "appendCBOR": true
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ]
+            }
+          },
+          "evmVersion": "london",
+          "libraries": {}
+        }
+      },
+      "imports": [
+        "lib/chainlink-brownie-contracts/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol"
+      ],
+      "versionRequirement": "=0.8.19",
+      "artifacts": {
+        "OracleLib": {
+          "0.8.19+commit.7dd6d404.Darwin.appleclang": "OracleLib.sol/OracleLib.json"
         }
       }
     }

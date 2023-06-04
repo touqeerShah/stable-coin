@@ -39,16 +39,10 @@ import "./../interface/IDecenttializedStableCoin.sol";
  *
  * This is the contract meant to be owned by DSCEngine. It is a ERC20 token that can be minted and burned by the DSCEngine smart contract.
  */
-contract DecentralizedStableCoin is
-    ERC20Burnable,
-    Ownable,
-    IDecenttializedStableCoin
-{
+contract DecentralizedStableCoin is ERC20Burnable, Ownable, IDecenttializedStableCoin {
     constructor() ERC20("DecentralizedStableCoin", "DSC") {}
 
-    function burn(
-        uint256 _amount
-    ) public override(ERC20Burnable, IDecenttializedStableCoin) onlyOwner {
+    function burn(uint256 _amount) public override(ERC20Burnable, IDecenttializedStableCoin) onlyOwner {
         uint256 balance = balanceOf(msg.sender);
         if (_amount <= 0) {
             revert DecentralizedStableCoin__AmountMustBeMoreThanZero();
@@ -59,10 +53,7 @@ contract DecentralizedStableCoin is
         super.burn(_amount);
     }
 
-    function mint(
-        address _to,
-        uint256 _amount
-    ) external onlyOwner returns (bool) {
+    function mint(address _to, uint256 _amount) external onlyOwner returns (bool) {
         if (_to == address(0)) {
             revert DecentralizedStableCoin__NotZeroAddress();
         }

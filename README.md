@@ -16,12 +16,25 @@ We user Foundry for development and deployment of the porject.
 
 2. Create project `forge init`
 
-3. Add Openzeppelin Contract for support  `forge install openzeppelin/openzeppelin-contracts --no-commit`
+3. Add Openzeppelin Contract for support  `forge install openzeppelin/openzeppelin-contracts --no-commit` and `forge install smartcontractkit/chainlink-brownie-contracts --no-commit`
 
 4. we create two contract Stable ERC20 coin and Engine
 5. we set threshold to let said %150  to collateral mean we never all system to be go down to this if it happend we liquidated coin to make it stable token price 
     - Ask someone to liqiuidated there coin in return he will recevied reward of collateral which always more then the actual coint values to motivate user to make system stable
 
+
+
+### Read Doc 
+
+AAve For health factor which mean it health to allow user to mint more stable coin agistn his/her collateral 
+
+```
+https://docs.aave.com/risk/asset-risk/risk-parameters#health-factor
+```
+To see Price Seed details on chainlink
+```
+https://docs.chain.link/data-feeds/price-feeds/addresses
+```
 # Thank you!
 
 [![Touqeer Medium](https://img.shields.io/badge/Medium-000000?style=for-the-badge&logo=medium&logoColor=white)](https://medium.com/@touqeershah32)
