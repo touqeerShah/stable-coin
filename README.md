@@ -1,6 +1,20 @@
 # stable-coin
 
-We user Foundry for development 
+We user Foundry for development and deployment of the porject.
+
+1. ( Relvative stability ) Anchored or Pehhed  -> Dollar $1.00
+    1. Chainlink Price Feed (To calculate Coin Price always around the Price)
+    2. Set a Function to exchange ETH& BTC -> Dollar 
+2. Stability Mechanism (Minting): Algorithmic (decentrialized)
+   1.  People can only mint the stablecoin with enough collateral (coded)
+3. Collaterial : Exogenous (Crypto) {wBTC, or wETH}
+ 
+
+### Step to install and setup
+
+Follow step from link to install `https://book.getfoundry.sh/getting-started/installation`
+
+create project `forge init`
 
 # Thank you!
 
