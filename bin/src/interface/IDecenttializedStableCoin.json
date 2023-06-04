@@ -1,0 +1,328 @@
+{
+    "contractName": "IDecenttializedStableCoin",
+    "abi": [
+        {
+            "inputs": [],
+            "name": "DecentralizedStableCoin__AmountMustBeMoreThanZero",
+            "type": "error"
+        },
+        {
+            "inputs": [],
+            "name": "DecentralizedStableCoin__BurnAmountExceedsBalance",
+            "type": "error"
+        },
+        {
+            "inputs": [],
+            "name": "DecentralizedStableCoin__NotZeroAddress",
+            "type": "error"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "_amount",
+                    "type": "uint256"
+                }
+            ],
+            "name": "burn",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "_to",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "_amount",
+                    "type": "uint256"
+                }
+            ],
+            "name": "mint",
+            "outputs": [
+                {
+                    "internalType": "bool",
+                    "name": "",
+                    "type": "bool"
+                }
+            ],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }
+    ],
+    "metadata": "{\"compiler\":{\"version\":\"0.8.19+commit.7dd6d404\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"name\":\"DecentralizedStableCoin__AmountMustBeMoreThanZero\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"DecentralizedStableCoin__BurnAmountExceedsBalance\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"DecentralizedStableCoin__NotZeroAddress\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_amount\",\"type\":\"uint256\"}],\"name\":\"burn\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_amount\",\"type\":\"uint256\"}],\"name\":\"mint\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/Users/touqeershah/Movies/Personal_Space/stable-coin/src/interface/IDecenttializedStableCoin.sol\":\"IDecenttializedStableCoin\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/touqeershah/Movies/Personal_Space/stable-coin/src/interface/IDecenttializedStableCoin.sol\":{\"keccak256\":\"0x611eb0850288967ef8b9d0e892c47e2be17dfde82f50cca12479cfde2f05eeab\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://b421a9a3255e76265163c080f1605a15e9c7222f8c869e01ca7fdb8a4c43ce7e\",\"dweb:/ipfs/QmVPAJCgC4G6q6VESjpTrXvMsi98yHwtAQLP4jz3siuZVh\"]}},\"version\":1}",
+    "bytecode": "",
+    "deployedBytecode": "",
+    "sourceMap": "",
+    "deployedSourceMap": "",
+    "sourcePath": "/Users/touqeershah/Movies/Personal_Space/stable-coin/src/interface/IDecenttializedStableCoin.sol",
+    "compiler": {
+        "name": "solc",
+        "version": "0.8.19+commit.7dd6d404"
+    },
+    "ast": {
+        "absolutePath": "/Users/touqeershah/Movies/Personal_Space/stable-coin/src/interface/IDecenttializedStableCoin.sol",
+        "exportedSymbols": {
+            "IDecenttializedStableCoin": [
+                1289
+            ]
+        },
+        "id": 1290,
+        "license": "MIT",
+        "nodeType": "SourceUnit",
+        "nodes": [
+            {
+                "id": 1268,
+                "literals": [
+                    "solidity",
+                    "0.8",
+                    ".19"
+                ],
+                "nodeType": "PragmaDirective",
+                "src": "33:23:10"
+            },
+            {
+                "abstract": false,
+                "baseContracts": [],
+                "canonicalName": "IDecenttializedStableCoin",
+                "contractDependencies": [],
+                "contractKind": "interface",
+                "fullyImplemented": false,
+                "id": 1289,
+                "linearizedBaseContracts": [
+                    1289
+                ],
+                "name": "IDecenttializedStableCoin",
+                "nameLocation": "68:25:10",
+                "nodeType": "ContractDefinition",
+                "nodes": [
+                    {
+                        "errorSelector": "ae8ba123",
+                        "id": 1270,
+                        "name": "DecentralizedStableCoin__AmountMustBeMoreThanZero",
+                        "nameLocation": "133:49:10",
+                        "nodeType": "ErrorDefinition",
+                        "parameters": {
+                            "id": 1269,
+                            "nodeType": "ParameterList",
+                            "parameters": [],
+                            "src": "182:2:10"
+                        },
+                        "src": "127:58:10"
+                    },
+                    {
+                        "errorSelector": "fe9c6abb",
+                        "id": 1272,
+                        "name": "DecentralizedStableCoin__BurnAmountExceedsBalance",
+                        "nameLocation": "196:49:10",
+                        "nodeType": "ErrorDefinition",
+                        "parameters": {
+                            "id": 1271,
+                            "nodeType": "ParameterList",
+                            "parameters": [],
+                            "src": "245:2:10"
+                        },
+                        "src": "190:58:10"
+                    },
+                    {
+                        "errorSelector": "f3c190e9",
+                        "id": 1274,
+                        "name": "DecentralizedStableCoin__NotZeroAddress",
+                        "nameLocation": "259:39:10",
+                        "nodeType": "ErrorDefinition",
+                        "parameters": {
+                            "id": 1273,
+                            "nodeType": "ParameterList",
+                            "parameters": [],
+                            "src": "298:2:10"
+                        },
+                        "src": "253:48:10"
+                    },
+                    {
+                        "functionSelector": "42966c68",
+                        "id": 1279,
+                        "implemented": false,
+                        "kind": "function",
+                        "modifiers": [],
+                        "name": "burn",
+                        "nameLocation": "316:4:10",
+                        "nodeType": "FunctionDefinition",
+                        "parameters": {
+                            "id": 1277,
+                            "nodeType": "ParameterList",
+                            "parameters": [
+                                {
+                                    "constant": false,
+                                    "id": 1276,
+                                    "mutability": "mutable",
+                                    "name": "_amount",
+                                    "nameLocation": "329:7:10",
+                                    "nodeType": "VariableDeclaration",
+                                    "scope": 1279,
+                                    "src": "321:15:10",
+                                    "stateVariable": false,
+                                    "storageLocation": "default",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_uint256",
+                                        "typeString": "uint256"
+                                    },
+                                    "typeName": {
+                                        "id": 1275,
+                                        "name": "uint256",
+                                        "nodeType": "ElementaryTypeName",
+                                        "src": "321:7:10",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_uint256",
+                                            "typeString": "uint256"
+                                        }
+                                    },
+                                    "visibility": "internal"
+                                }
+                            ],
+                            "src": "320:17:10"
+                        },
+                        "returnParameters": {
+                            "id": 1278,
+                            "nodeType": "ParameterList",
+                            "parameters": [],
+                            "src": "346:0:10"
+                        },
+                        "scope": 1289,
+                        "src": "307:40:10",
+                        "stateMutability": "nonpayable",
+                        "virtual": false,
+                        "visibility": "external"
+                    },
+                    {
+                        "functionSelector": "40c10f19",
+                        "id": 1288,
+                        "implemented": false,
+                        "kind": "function",
+                        "modifiers": [],
+                        "name": "mint",
+                        "nameLocation": "362:4:10",
+                        "nodeType": "FunctionDefinition",
+                        "parameters": {
+                            "id": 1284,
+                            "nodeType": "ParameterList",
+                            "parameters": [
+                                {
+                                    "constant": false,
+                                    "id": 1281,
+                                    "mutability": "mutable",
+                                    "name": "_to",
+                                    "nameLocation": "375:3:10",
+                                    "nodeType": "VariableDeclaration",
+                                    "scope": 1288,
+                                    "src": "367:11:10",
+                                    "stateVariable": false,
+                                    "storageLocation": "default",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_address",
+                                        "typeString": "address"
+                                    },
+                                    "typeName": {
+                                        "id": 1280,
+                                        "name": "address",
+                                        "nodeType": "ElementaryTypeName",
+                                        "src": "367:7:10",
+                                        "stateMutability": "nonpayable",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_address",
+                                            "typeString": "address"
+                                        }
+                                    },
+                                    "visibility": "internal"
+                                },
+                                {
+                                    "constant": false,
+                                    "id": 1283,
+                                    "mutability": "mutable",
+                                    "name": "_amount",
+                                    "nameLocation": "388:7:10",
+                                    "nodeType": "VariableDeclaration",
+                                    "scope": 1288,
+                                    "src": "380:15:10",
+                                    "stateVariable": false,
+                                    "storageLocation": "default",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_uint256",
+                                        "typeString": "uint256"
+                                    },
+                                    "typeName": {
+                                        "id": 1282,
+                                        "name": "uint256",
+                                        "nodeType": "ElementaryTypeName",
+                                        "src": "380:7:10",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_uint256",
+                                            "typeString": "uint256"
+                                        }
+                                    },
+                                    "visibility": "internal"
+                                }
+                            ],
+                            "src": "366:30:10"
+                        },
+                        "returnParameters": {
+                            "id": 1287,
+                            "nodeType": "ParameterList",
+                            "parameters": [
+                                {
+                                    "constant": false,
+                                    "id": 1286,
+                                    "mutability": "mutable",
+                                    "name": "",
+                                    "nameLocation": "-1:-1:-1",
+                                    "nodeType": "VariableDeclaration",
+                                    "scope": 1288,
+                                    "src": "415:4:10",
+                                    "stateVariable": false,
+                                    "storageLocation": "default",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_bool",
+                                        "typeString": "bool"
+                                    },
+                                    "typeName": {
+                                        "id": 1285,
+                                        "name": "bool",
+                                        "nodeType": "ElementaryTypeName",
+                                        "src": "415:4:10",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_bool",
+                                            "typeString": "bool"
+                                        }
+                                    },
+                                    "visibility": "internal"
+                                }
+                            ],
+                            "src": "414:6:10"
+                        },
+                        "scope": 1289,
+                        "src": "353:68:10",
+                        "stateMutability": "nonpayable",
+                        "virtual": false,
+                        "visibility": "external"
+                    }
+                ],
+                "scope": 1290,
+                "src": "58:365:10",
+                "usedErrors": [
+                    1270,
+                    1272,
+                    1274
+                ]
+            }
+        ],
+        "src": "33:391:10"
+    },
+    "functionHashes": {
+        "burn(uint256)": "42966c68",
+        "mint(address,uint256)": "40c10f19"
+    },
+    "gasEstimates": null
+}

@@ -1,0 +1,645 @@
+{
+    "contractName": "IDSCEngine",
+    "abi": [
+        {
+            "inputs": [],
+            "name": "DSCEngine__AmountMustBeMoreThanZero",
+            "type": "error"
+        },
+        {
+            "inputs": [],
+            "name": "DSCEngine__BurnAmountExceedsBalance",
+            "type": "error"
+        },
+        {
+            "inputs": [],
+            "name": "DSCEngine__NotZeroAddress",
+            "type": "error"
+        },
+        {
+            "inputs": [],
+            "name": "DSCEngine__TokenAddressesAndPriceFeedAddressesAmountsDontMatch",
+            "type": "error"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "token",
+                    "type": "address"
+                }
+            ],
+            "name": "DSCEngine__TokenNotAllowed",
+            "type": "error"
+        },
+        {
+            "inputs": [],
+            "name": "bureDsc",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "tokenCollateralAddress",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "amountCollateral",
+                    "type": "uint256"
+                }
+            ],
+            "name": "depostCollateral",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "depostCollateralAndMintDsc",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "getHealthFactory",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "collateral",
+                    "type": "address"
+                },
+                {
+                    "internalType": "address",
+                    "name": "user",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "debtToCover",
+                    "type": "uint256"
+                }
+            ],
+            "name": "liquidate",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "minDsc",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "redeemCollateral",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "redeemCollateralFroDec",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }
+    ],
+    "metadata": "{\"compiler\":{\"version\":\"0.8.19+commit.7dd6d404\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"name\":\"DSCEngine__AmountMustBeMoreThanZero\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"DSCEngine__BurnAmountExceedsBalance\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"DSCEngine__NotZeroAddress\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"DSCEngine__TokenAddressesAndPriceFeedAddressesAmountsDontMatch\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\"}],\"name\":\"DSCEngine__TokenNotAllowed\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"bureDsc\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"tokenCollateralAddress\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amountCollateral\",\"type\":\"uint256\"}],\"name\":\"depostCollateral\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"depostCollateralAndMintDsc\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getHealthFactory\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"collateral\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"debtToCover\",\"type\":\"uint256\"}],\"name\":\"liquidate\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"minDsc\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"redeemCollateral\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"redeemCollateralFroDec\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/Users/touqeershah/Movies/Personal_Space/stable-coin/src/interface/IDSCEngine.sol\":\"IDSCEngine\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/touqeershah/Movies/Personal_Space/stable-coin/src/interface/IDSCEngine.sol\":{\"keccak256\":\"0x3e2617c1402916e011700e345e191929e341424787b0516aea307df33bf8bbbe\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://72a54bd91cc17fddda6918f3e04d17b0c881dbcfaff53820381d0780451db680\",\"dweb:/ipfs/QmTtaqgSZDTBY3d6UfHXCwQqy6wt8uQd2CneyiF5sWBbhR\"]}},\"version\":1}",
+    "bytecode": "",
+    "deployedBytecode": "",
+    "sourceMap": "",
+    "deployedSourceMap": "",
+    "sourcePath": "/Users/touqeershah/Movies/Personal_Space/stable-coin/src/interface/IDSCEngine.sol",
+    "compiler": {
+        "name": "solc",
+        "version": "0.8.19+commit.7dd6d404"
+    },
+    "ast": {
+        "absolutePath": "/Users/touqeershah/Movies/Personal_Space/stable-coin/src/interface/IDSCEngine.sol",
+        "exportedSymbols": {
+            "IDSCEngine": [
+                1266
+            ]
+        },
+        "id": 1267,
+        "license": "MIT",
+        "nodeType": "SourceUnit",
+        "nodes": [
+            {
+                "id": 1219,
+                "literals": [
+                    "solidity",
+                    "0.8",
+                    ".19"
+                ],
+                "nodeType": "PragmaDirective",
+                "src": "33:23:9"
+            },
+            {
+                "abstract": false,
+                "baseContracts": [],
+                "canonicalName": "IDSCEngine",
+                "contractDependencies": [],
+                "contractKind": "interface",
+                "fullyImplemented": false,
+                "id": 1266,
+                "linearizedBaseContracts": [
+                    1266
+                ],
+                "name": "IDSCEngine",
+                "nameLocation": "68:10:9",
+                "nodeType": "ContractDefinition",
+                "nodes": [
+                    {
+                        "errorSelector": "09556c09",
+                        "id": 1221,
+                        "name": "DSCEngine__AmountMustBeMoreThanZero",
+                        "nameLocation": "118:35:9",
+                        "nodeType": "ErrorDefinition",
+                        "parameters": {
+                            "id": 1220,
+                            "nodeType": "ParameterList",
+                            "parameters": [],
+                            "src": "153:2:9"
+                        },
+                        "src": "112:44:9"
+                    },
+                    {
+                        "errorSelector": "30735fbb",
+                        "id": 1223,
+                        "name": "DSCEngine__BurnAmountExceedsBalance",
+                        "nameLocation": "167:35:9",
+                        "nodeType": "ErrorDefinition",
+                        "parameters": {
+                            "id": 1222,
+                            "nodeType": "ParameterList",
+                            "parameters": [],
+                            "src": "202:2:9"
+                        },
+                        "src": "161:44:9"
+                    },
+                    {
+                        "errorSelector": "1b5c500b",
+                        "id": 1225,
+                        "name": "DSCEngine__NotZeroAddress",
+                        "nameLocation": "216:25:9",
+                        "nodeType": "ErrorDefinition",
+                        "parameters": {
+                            "id": 1224,
+                            "nodeType": "ParameterList",
+                            "parameters": [],
+                            "src": "241:2:9"
+                        },
+                        "src": "210:34:9"
+                    },
+                    {
+                        "errorSelector": "cf393595",
+                        "id": 1229,
+                        "name": "DSCEngine__TokenNotAllowed",
+                        "nameLocation": "255:26:9",
+                        "nodeType": "ErrorDefinition",
+                        "parameters": {
+                            "id": 1228,
+                            "nodeType": "ParameterList",
+                            "parameters": [
+                                {
+                                    "constant": false,
+                                    "id": 1227,
+                                    "mutability": "mutable",
+                                    "name": "token",
+                                    "nameLocation": "290:5:9",
+                                    "nodeType": "VariableDeclaration",
+                                    "scope": 1229,
+                                    "src": "282:13:9",
+                                    "stateVariable": false,
+                                    "storageLocation": "default",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_address",
+                                        "typeString": "address"
+                                    },
+                                    "typeName": {
+                                        "id": 1226,
+                                        "name": "address",
+                                        "nodeType": "ElementaryTypeName",
+                                        "src": "282:7:9",
+                                        "stateMutability": "nonpayable",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_address",
+                                            "typeString": "address"
+                                        }
+                                    },
+                                    "visibility": "internal"
+                                }
+                            ],
+                            "src": "281:15:9"
+                        },
+                        "src": "249:48:9"
+                    },
+                    {
+                        "errorSelector": "3b1767ce",
+                        "id": 1231,
+                        "name": "DSCEngine__TokenAddressesAndPriceFeedAddressesAmountsDontMatch",
+                        "nameLocation": "308:62:9",
+                        "nodeType": "ErrorDefinition",
+                        "parameters": {
+                            "id": 1230,
+                            "nodeType": "ParameterList",
+                            "parameters": [],
+                            "src": "370:2:9"
+                        },
+                        "src": "302:71:9"
+                    },
+                    {
+                        "functionSelector": "e9a19e46",
+                        "id": 1234,
+                        "implemented": false,
+                        "kind": "function",
+                        "modifiers": [],
+                        "name": "depostCollateralAndMintDsc",
+                        "nameLocation": "388:26:9",
+                        "nodeType": "FunctionDefinition",
+                        "parameters": {
+                            "id": 1232,
+                            "nodeType": "ParameterList",
+                            "parameters": [],
+                            "src": "414:2:9"
+                        },
+                        "returnParameters": {
+                            "id": 1233,
+                            "nodeType": "ParameterList",
+                            "parameters": [],
+                            "src": "425:0:9"
+                        },
+                        "scope": 1266,
+                        "src": "379:47:9",
+                        "stateMutability": "nonpayable",
+                        "virtual": false,
+                        "visibility": "external"
+                    },
+                    {
+                        "functionSelector": "1574771d",
+                        "id": 1241,
+                        "implemented": false,
+                        "kind": "function",
+                        "modifiers": [],
+                        "name": "depostCollateral",
+                        "nameLocation": "441:16:9",
+                        "nodeType": "FunctionDefinition",
+                        "parameters": {
+                            "id": 1239,
+                            "nodeType": "ParameterList",
+                            "parameters": [
+                                {
+                                    "constant": false,
+                                    "id": 1236,
+                                    "mutability": "mutable",
+                                    "name": "tokenCollateralAddress",
+                                    "nameLocation": "475:22:9",
+                                    "nodeType": "VariableDeclaration",
+                                    "scope": 1241,
+                                    "src": "467:30:9",
+                                    "stateVariable": false,
+                                    "storageLocation": "default",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_address",
+                                        "typeString": "address"
+                                    },
+                                    "typeName": {
+                                        "id": 1235,
+                                        "name": "address",
+                                        "nodeType": "ElementaryTypeName",
+                                        "src": "467:7:9",
+                                        "stateMutability": "nonpayable",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_address",
+                                            "typeString": "address"
+                                        }
+                                    },
+                                    "visibility": "internal"
+                                },
+                                {
+                                    "constant": false,
+                                    "id": 1238,
+                                    "mutability": "mutable",
+                                    "name": "amountCollateral",
+                                    "nameLocation": "515:16:9",
+                                    "nodeType": "VariableDeclaration",
+                                    "scope": 1241,
+                                    "src": "507:24:9",
+                                    "stateVariable": false,
+                                    "storageLocation": "default",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_uint256",
+                                        "typeString": "uint256"
+                                    },
+                                    "typeName": {
+                                        "id": 1237,
+                                        "name": "uint256",
+                                        "nodeType": "ElementaryTypeName",
+                                        "src": "507:7:9",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_uint256",
+                                            "typeString": "uint256"
+                                        }
+                                    },
+                                    "visibility": "internal"
+                                }
+                            ],
+                            "src": "457:80:9"
+                        },
+                        "returnParameters": {
+                            "id": 1240,
+                            "nodeType": "ParameterList",
+                            "parameters": [],
+                            "src": "546:0:9"
+                        },
+                        "scope": 1266,
+                        "src": "432:115:9",
+                        "stateMutability": "nonpayable",
+                        "virtual": false,
+                        "visibility": "external"
+                    },
+                    {
+                        "functionSelector": "3ef15e36",
+                        "id": 1244,
+                        "implemented": false,
+                        "kind": "function",
+                        "modifiers": [],
+                        "name": "redeemCollateralFroDec",
+                        "nameLocation": "562:22:9",
+                        "nodeType": "FunctionDefinition",
+                        "parameters": {
+                            "id": 1242,
+                            "nodeType": "ParameterList",
+                            "parameters": [],
+                            "src": "584:2:9"
+                        },
+                        "returnParameters": {
+                            "id": 1243,
+                            "nodeType": "ParameterList",
+                            "parameters": [],
+                            "src": "595:0:9"
+                        },
+                        "scope": 1266,
+                        "src": "553:43:9",
+                        "stateMutability": "nonpayable",
+                        "virtual": false,
+                        "visibility": "external"
+                    },
+                    {
+                        "functionSelector": "a6534470",
+                        "id": 1247,
+                        "implemented": false,
+                        "kind": "function",
+                        "modifiers": [],
+                        "name": "redeemCollateral",
+                        "nameLocation": "611:16:9",
+                        "nodeType": "FunctionDefinition",
+                        "parameters": {
+                            "id": 1245,
+                            "nodeType": "ParameterList",
+                            "parameters": [],
+                            "src": "627:2:9"
+                        },
+                        "returnParameters": {
+                            "id": 1246,
+                            "nodeType": "ParameterList",
+                            "parameters": [],
+                            "src": "638:0:9"
+                        },
+                        "scope": 1266,
+                        "src": "602:37:9",
+                        "stateMutability": "nonpayable",
+                        "virtual": false,
+                        "visibility": "external"
+                    },
+                    {
+                        "functionSelector": "cc76755f",
+                        "id": 1250,
+                        "implemented": false,
+                        "kind": "function",
+                        "modifiers": [],
+                        "name": "bureDsc",
+                        "nameLocation": "654:7:9",
+                        "nodeType": "FunctionDefinition",
+                        "parameters": {
+                            "id": 1248,
+                            "nodeType": "ParameterList",
+                            "parameters": [],
+                            "src": "661:2:9"
+                        },
+                        "returnParameters": {
+                            "id": 1249,
+                            "nodeType": "ParameterList",
+                            "parameters": [],
+                            "src": "672:0:9"
+                        },
+                        "scope": 1266,
+                        "src": "645:28:9",
+                        "stateMutability": "nonpayable",
+                        "virtual": false,
+                        "visibility": "external"
+                    },
+                    {
+                        "functionSelector": "136346a1",
+                        "id": 1253,
+                        "implemented": false,
+                        "kind": "function",
+                        "modifiers": [],
+                        "name": "minDsc",
+                        "nameLocation": "688:6:9",
+                        "nodeType": "FunctionDefinition",
+                        "parameters": {
+                            "id": 1251,
+                            "nodeType": "ParameterList",
+                            "parameters": [],
+                            "src": "694:2:9"
+                        },
+                        "returnParameters": {
+                            "id": 1252,
+                            "nodeType": "ParameterList",
+                            "parameters": [],
+                            "src": "705:0:9"
+                        },
+                        "scope": 1266,
+                        "src": "679:27:9",
+                        "stateMutability": "nonpayable",
+                        "virtual": false,
+                        "visibility": "external"
+                    },
+                    {
+                        "functionSelector": "26c01303",
+                        "id": 1262,
+                        "implemented": false,
+                        "kind": "function",
+                        "modifiers": [],
+                        "name": "liquidate",
+                        "nameLocation": "721:9:9",
+                        "nodeType": "FunctionDefinition",
+                        "parameters": {
+                            "id": 1260,
+                            "nodeType": "ParameterList",
+                            "parameters": [
+                                {
+                                    "constant": false,
+                                    "id": 1255,
+                                    "mutability": "mutable",
+                                    "name": "collateral",
+                                    "nameLocation": "748:10:9",
+                                    "nodeType": "VariableDeclaration",
+                                    "scope": 1262,
+                                    "src": "740:18:9",
+                                    "stateVariable": false,
+                                    "storageLocation": "default",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_address",
+                                        "typeString": "address"
+                                    },
+                                    "typeName": {
+                                        "id": 1254,
+                                        "name": "address",
+                                        "nodeType": "ElementaryTypeName",
+                                        "src": "740:7:9",
+                                        "stateMutability": "nonpayable",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_address",
+                                            "typeString": "address"
+                                        }
+                                    },
+                                    "visibility": "internal"
+                                },
+                                {
+                                    "constant": false,
+                                    "id": 1257,
+                                    "mutability": "mutable",
+                                    "name": "user",
+                                    "nameLocation": "776:4:9",
+                                    "nodeType": "VariableDeclaration",
+                                    "scope": 1262,
+                                    "src": "768:12:9",
+                                    "stateVariable": false,
+                                    "storageLocation": "default",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_address",
+                                        "typeString": "address"
+                                    },
+                                    "typeName": {
+                                        "id": 1256,
+                                        "name": "address",
+                                        "nodeType": "ElementaryTypeName",
+                                        "src": "768:7:9",
+                                        "stateMutability": "nonpayable",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_address",
+                                            "typeString": "address"
+                                        }
+                                    },
+                                    "visibility": "internal"
+                                },
+                                {
+                                    "constant": false,
+                                    "id": 1259,
+                                    "mutability": "mutable",
+                                    "name": "debtToCover",
+                                    "nameLocation": "798:11:9",
+                                    "nodeType": "VariableDeclaration",
+                                    "scope": 1262,
+                                    "src": "790:19:9",
+                                    "stateVariable": false,
+                                    "storageLocation": "default",
+                                    "typeDescriptions": {
+                                        "typeIdentifier": "t_uint256",
+                                        "typeString": "uint256"
+                                    },
+                                    "typeName": {
+                                        "id": 1258,
+                                        "name": "uint256",
+                                        "nodeType": "ElementaryTypeName",
+                                        "src": "790:7:9",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_uint256",
+                                            "typeString": "uint256"
+                                        }
+                                    },
+                                    "visibility": "internal"
+                                }
+                            ],
+                            "src": "730:85:9"
+                        },
+                        "returnParameters": {
+                            "id": 1261,
+                            "nodeType": "ParameterList",
+                            "parameters": [],
+                            "src": "824:0:9"
+                        },
+                        "scope": 1266,
+                        "src": "712:113:9",
+                        "stateMutability": "nonpayable",
+                        "virtual": false,
+                        "visibility": "external"
+                    },
+                    {
+                        "functionSelector": "7d4e7743",
+                        "id": 1265,
+                        "implemented": false,
+                        "kind": "function",
+                        "modifiers": [],
+                        "name": "getHealthFactory",
+                        "nameLocation": "840:16:9",
+                        "nodeType": "FunctionDefinition",
+                        "parameters": {
+                            "id": 1263,
+                            "nodeType": "ParameterList",
+                            "parameters": [],
+                            "src": "856:2:9"
+                        },
+                        "returnParameters": {
+                            "id": 1264,
+                            "nodeType": "ParameterList",
+                            "parameters": [],
+                            "src": "867:0:9"
+                        },
+                        "scope": 1266,
+                        "src": "831:37:9",
+                        "stateMutability": "nonpayable",
+                        "virtual": false,
+                        "visibility": "external"
+                    }
+                ],
+                "scope": 1267,
+                "src": "58:812:9",
+                "usedErrors": [
+                    1221,
+                    1223,
+                    1225,
+                    1229,
+                    1231
+                ]
+            }
+        ],
+        "src": "33:838:9"
+    },
+    "functionHashes": {
+        "bureDsc()": "cc76755f",
+        "depostCollateral(address,uint256)": "1574771d",
+        "depostCollateralAndMintDsc()": "e9a19e46",
+        "getHealthFactory()": "7d4e7743",
+        "liquidate(address,address,uint256)": "26c01303",
+        "minDsc()": "136346a1",
+        "redeemCollateral()": "a6534470",
+        "redeemCollateralFroDec()": "3ef15e36"
+    },
+    "gasEstimates": null
+}

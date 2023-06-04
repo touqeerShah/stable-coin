@@ -2,7 +2,7 @@
 
 We user Foundry for development and deployment of the porject.
 
-1. ( Relvative stability ) Anchored or Pehhed  -> Dollar $1.00
+1. ( Relvative stability ) Anchored or Peg  -> Dollar $1.00
     1. Chainlink Price Feed (To calculate Coin Price always around the Price)
     2. Set a Function to exchange ETH& BTC -> Dollar 
 2. Stability Mechanism (Minting): Algorithmic (decentrialized)
@@ -12,9 +12,15 @@ We user Foundry for development and deployment of the porject.
 
 ### Step to install and setup
 
-Follow step from link to install `https://book.getfoundry.sh/getting-started/installation`
+1. Follow step from link to install `https://book.getfoundry.sh/getting-started/installation`
 
-create project `forge init`
+2. Create project `forge init`
+
+3. Add Openzeppelin Contract for support  `forge install openzeppelin/openzeppelin-contracts --no-commit`
+
+4. we create two contract Stable ERC20 coin and Engine
+5. we set threshold to let said %150  to collateral mean we never all system to be go down to this if it happend we liquidated coin to make it stable token price 
+    - Ask someone to liqiuidated there coin in return he will recevied reward of collateral which always more then the actual coint values to motivate user to make system stable
 
 # Thank you!
 
