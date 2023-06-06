@@ -6,6 +6,8 @@ interface IDSCEngine {
     //Events
     event CollateralDeposited(address indexed depositor, uint256 indexed amount);
     event MinDsc(address indexed minter, uint256 indexed amount);
+    event CollateralRedeemed(address indexed user, address indexed token, uint256 indexed amount);
+
     // Error
 
     error DSCEngine__AmountMustBeMoreThanZero();
@@ -17,15 +19,17 @@ interface IDSCEngine {
     error DSCEngine__BreaksHealthFactor(uint256 userHealthFactor);
     error DSCEngine__MintFailed();
 
-    function depostCollateralAndMintDsc() external;
+    function depostCollateralAndMintDsc(address tokenCollateralAddress, uint256 amountCollateral, uint256 amountToMint)
+        external;
 
     function depostCollateral(address tokenCollateralAddress, uint256 amountCollateral) external;
 
-    function redeemCollateralFroDec() external;
+    function redeemCollateralFroDec(address tokenCollateralAddress, uint256 amountCollateral, uint256 amountToBurn)
+        external;
 
-    function redeemCollateral() external;
+    function redeemCollateral(address tokenCollateralAddress, uint256 amountCollateral) external;
 
-    function bureDsc() external;
+    function bureDsc(uint256 amount) external;
 
     function minDsc(uint256 amountDscToMint) external;
 

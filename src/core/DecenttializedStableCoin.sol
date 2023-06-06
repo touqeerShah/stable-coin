@@ -63,4 +63,12 @@ contract DecentralizedStableCoin is ERC20Burnable, Ownable, IDecenttializedStabl
         _mint(_to, _amount);
         return true;
     }
+
+    function transferFrom(address from, address to, uint256 amount)
+        public
+        override(ERC20, IDecenttializedStableCoin)
+        returns (bool)
+    {
+        return super.transferFrom(from, to, amount);
+    }
 }

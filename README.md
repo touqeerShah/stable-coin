@@ -21,7 +21,9 @@ We user Foundry for development and deployment of the porject.
 4. we create two contract Stable ERC20 coin and Engine
 5. we set threshold to let said %150  to collateral mean we never all system to be go down to this if it happend we liquidated coin to make it stable token price 
     - Ask someone to liqiuidated there coin in return he will recevied reward of collateral which always more then the actual coint values to motivate user to make system stable
-
+6. to run network local you `avvil` it give you network some as `hardhat node` 
+7. compile `forge build`
+8. Run Specfic Test `forge test -m nameOfFunction` Local or if one chain `forge test -m nameOfFunction --fork-url $SEPOLIA_RPC_RUL`
 
 
 ### Read Doc 

@@ -43,7 +43,7 @@ import {IDecenttializedStableCoin} from "./../interface/IDecenttializedStableCoi
  *
  * It is smimilar to DAI if DAI hash no Governace , no fee and was only backed by WETH or WBTC
  *
- * Our DSC system have always be overcollateralized , at no point it will not be less the DSC,it should
+ * Our DSThis C system have always be overcollateralized , at no point it will not be less the DSC,it should
  * Always be more collateral the coins in system
  * @notice This is core or main Contract of the system.
  * - Mining
@@ -114,16 +114,26 @@ contract DSCEngine is ReentrancyGuard, IDSCEngine {
     }
 
     ///Function
+    /**
+     * @param tokenCollateralAddress collateral token address
+     * @param amountCollateral amount to put on collateral
+     * @param amountToMint amount to mint
+     * @notice This function all to combine deposit and mint stable coin
+     */
+    function depostCollateralAndMintDsc(address tokenCollateralAddress, uint256 amountCollateral, uint256 amountToMint)
+        external
+    {
+        depostCollateral(tokenCollateralAddress, amountCollateral);
+        minDsc(amountToMint);
+    }
 
-    function depostCollateralAndMintDsc() external {}
-
-    /*
+    /**
      * This function where user will deposit and state ther collateral initially
      * @param tokenCollateralAddress: The ERC20 token address of the collateral you're depositing
      * @param amountCollateral: The amount of collateral you're depositing
      */
     function depostCollateral(address tokenCollateralAddress, uint256 amountCollateral)
-        external
+        public
         moreThenZero(amountCollateral)
         isAllowedToken(tokenCollateralAddress)
         nonReentrant
@@ -135,19 +145,55 @@ contract DSCEngine is ReentrancyGuard, IDSCEngine {
             revert DSCEngine__TransferFailed();
         }
     }
+    /**
+     * This function where user will redeem or get back the collateral
+     * @param tokenCollateralAddress: The ERC20 token address of the collateral you're depositing
+     * @param amountCollateral: The amount of collateral you're depositing
+     *  1. health check mush be 1 Affer collateral pullled
+     * CEI Check ,Effects,Interactions
+     */
 
-    function redeemCollateralFroDec() external {}
+    function redeemCollateral(address tokenCollateralAddress, uint256 amountCollateral)
+        public
+        moreThenZero(amountCollateral)
+        nonReentrant
+    {
+        s_collateralDeposited[msg.sender][tokenCollateralAddress] -= amountCollateral;
+        emit CollateralRedeemed(msg.sender, tokenCollateralAddress, amountCollateral);
+        bool success = IERC20(tokenCollateralAddress).transfer(msg.sender, amountCollateral);
+        if (!success) {
+            revert DSCEngine__TransferFailed();
+        }
+        _revertIfHealthFactorIsBroken(msg.sender);
+    }
 
-    function redeemCollateral() external {}
+    /**
+     * This function where user will redeem or get back the collateral and burn stable token
+     * @param tokenCollateralAddress: The ERC20 token address of the collateral you're depositing
+     * @param amountCollateral: The amount of collateral you're depositing
+     * @param amountToBurn how much want to burn
+     */
+    function redeemCollateralFroDec(address tokenCollateralAddress, uint256 amountCollateral, uint256 amountToBurn)
+        external
+    {
+        bureDsc(amountToBurn);
+        redeemCollateral(tokenCollateralAddress, amountCollateral);
+    }
 
-    function bureDsc() external {}
+    function bureDsc(uint256 amount) public moreThenZero(amount) nonReentrant {
+        bool success = i_dsc.transferFrom(msg.sender, address(this), amount);
+        if (!success) {
+            revert DSCEngine__TransferFailed();
+        }
+        i_dsc.burn(amount);
+    }
     /*
      * This where we mint our DSC token or clame our collatral into DSC token
      * @param amountDscToMint  the Amount of Token which we want to mint against collateral
      * @notice must have more value of collateral the coin he want to mint
      */
 
-    function minDsc(uint256 amountDscToMint) external moreThenZero(amountDscToMint) nonReentrant {
+    function minDsc(uint256 amountDscToMint) public moreThenZero(amountDscToMint) nonReentrant {
         s_DSCMinted[msg.sender] += amountDscToMint;
         _revertIfHealthFactorIsBroken(msg.sender);
         bool minted = i_dsc.mint(msg.sender, amountDscToMint);
@@ -223,7 +269,7 @@ contract DSCEngine is ReentrancyGuard, IDSCEngine {
      * @param amount amount  he hold against that token
      */
 
-    function _getUsdValue(address token, uint256 amount) private view returns (uint256) {
+    function getUsdValue(address token, uint256 amount) public view returns (uint256) {
         AggregatorV3Interface priceFeed = AggregatorV3Interface(s_priceFeeds[token]);
         (, int256 price,,,) = priceFeed.staleCheckLatestRoundData();
         // 1 ETH = 1000 USD
@@ -267,7 +313,7 @@ contract DSCEngine is ReentrancyGuard, IDSCEngine {
         for (uint256 index = 0; index < s_collateralTokens.length; index++) {
             address token = s_collateralTokens[index];
             uint256 amount = s_collateralDeposited[user][token];
-            totalCollateralValueInUsd += _getUsdValue(token, amount);
+            totalCollateralValueInUsd += getUsdValue(token, amount);
         }
         return totalCollateralValueInUsd;
     }
