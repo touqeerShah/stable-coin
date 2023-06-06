@@ -39,7 +39,7 @@
               ]
             }
           },
-          "evmVersion": "london",
+          "evmVersion": "paris",
           "libraries": {}
         }
       },
@@ -79,7 +79,7 @@
               ]
             }
           },
-          "evmVersion": "london",
+          "evmVersion": "paris",
           "libraries": {}
         }
       },
@@ -119,7 +119,7 @@
               ]
             }
           },
-          "evmVersion": "london",
+          "evmVersion": "paris",
           "libraries": {}
         }
       },
@@ -168,7 +168,7 @@
               ]
             }
           },
-          "evmVersion": "london",
+          "evmVersion": "paris",
           "libraries": {}
         }
       },
@@ -220,7 +220,7 @@
               ]
             }
           },
-          "evmVersion": "london",
+          "evmVersion": "paris",
           "libraries": {}
         }
       },
@@ -263,7 +263,7 @@
               ]
             }
           },
-          "evmVersion": "london",
+          "evmVersion": "paris",
           "libraries": {}
         }
       },
@@ -305,7 +305,7 @@
               ]
             }
           },
-          "evmVersion": "london",
+          "evmVersion": "paris",
           "libraries": {}
         }
       },
@@ -352,7 +352,7 @@
               ]
             }
           },
-          "evmVersion": "london",
+          "evmVersion": "paris",
           "libraries": {}
         }
       },
@@ -392,7 +392,7 @@
               ]
             }
           },
-          "evmVersion": "london",
+          "evmVersion": "paris",
           "libraries": {}
         }
       },
@@ -432,7 +432,7 @@
               ]
             }
           },
-          "evmVersion": "london",
+          "evmVersion": "paris",
           "libraries": {}
         }
       },
@@ -474,7 +474,7 @@
               ]
             }
           },
-          "evmVersion": "london",
+          "evmVersion": "paris",
           "libraries": {}
         }
       },
@@ -514,7 +514,7 @@
               ]
             }
           },
-          "evmVersion": "london",
+          "evmVersion": "paris",
           "libraries": {}
         }
       },
@@ -559,7 +559,7 @@
               ]
             }
           },
-          "evmVersion": "london",
+          "evmVersion": "paris",
           "libraries": {}
         }
       },
@@ -601,7 +601,7 @@
               ]
             }
           },
-          "evmVersion": "london",
+          "evmVersion": "paris",
           "libraries": {}
         }
       },
@@ -644,7 +644,7 @@
               ]
             }
           },
-          "evmVersion": "london",
+          "evmVersion": "paris",
           "libraries": {}
         }
       },
@@ -701,7 +701,7 @@
               ]
             }
           },
-          "evmVersion": "london",
+          "evmVersion": "paris",
           "libraries": {}
         }
       },
@@ -744,7 +744,7 @@
               ]
             }
           },
-          "evmVersion": "london",
+          "evmVersion": "paris",
           "libraries": {}
         }
       },
@@ -784,7 +784,7 @@
               ]
             }
           },
-          "evmVersion": "london",
+          "evmVersion": "paris",
           "libraries": {}
         }
       },
@@ -824,7 +824,7 @@
               ]
             }
           },
-          "evmVersion": "london",
+          "evmVersion": "paris",
           "libraries": {}
         }
       },
@@ -864,7 +864,7 @@
               ]
             }
           },
-          "evmVersion": "london",
+          "evmVersion": "paris",
           "libraries": {}
         }
       },
@@ -906,7 +906,7 @@
               ]
             }
           },
-          "evmVersion": "london",
+          "evmVersion": "paris",
           "libraries": {}
         }
       },
@@ -946,7 +946,7 @@
               ]
             }
           },
-          "evmVersion": "london",
+          "evmVersion": "paris",
           "libraries": {}
         }
       },
@@ -990,7 +990,7 @@
               ]
             }
           },
-          "evmVersion": "london",
+          "evmVersion": "paris",
           "libraries": {}
         }
       },
@@ -1030,7 +1030,7 @@
               ]
             }
           },
-          "evmVersion": "london",
+          "evmVersion": "paris",
           "libraries": {}
         }
       },
@@ -1075,7 +1075,7 @@
               ]
             }
           },
-          "evmVersion": "london",
+          "evmVersion": "paris",
           "libraries": {}
         }
       },
@@ -1117,7 +1117,7 @@
               ]
             }
           },
-          "evmVersion": "london",
+          "evmVersion": "paris",
           "libraries": {}
         }
       },
@@ -1157,7 +1157,7 @@
               ]
             }
           },
-          "evmVersion": "london",
+          "evmVersion": "paris",
           "libraries": {}
         }
       },
@@ -1226,7 +1226,7 @@
               ]
             }
           },
-          "evmVersion": "london",
+          "evmVersion": "paris",
           "libraries": {}
         }
       },
@@ -1258,8 +1258,8 @@
       }
     },
     "src/core/DSCEngine.sol": {
-      "lastModificationDate": 1686000182757,
-      "contentHash": "f8e5eb2202d49a21037589e3de96983e",
+      "lastModificationDate": 1686086177720,
+      "contentHash": "d7e32829da33649c949517a213a3bf72",
       "sourceName": "src/core/DSCEngine.sol",
       "solcConfig": {
         "settings": {
@@ -1285,7 +1285,7 @@
               ]
             }
           },
-          "evmVersion": "london",
+          "evmVersion": "paris",
           "libraries": {}
         }
       },
@@ -1305,8 +1305,8 @@
       }
     },
     "src/core/DecenttializedStableCoin.sol": {
-      "lastModificationDate": 1685912455660,
-      "contentHash": "dbb22791062fcbbdf98c4cb37b2d2289",
+      "lastModificationDate": 1686004475556,
+      "contentHash": "5fde18da1132e6c0022a0d1db38d0dac",
       "sourceName": "src/core/DecenttializedStableCoin.sol",
       "solcConfig": {
         "settings": {
@@ -1332,7 +1332,7 @@
               ]
             }
           },
-          "evmVersion": "london",
+          "evmVersion": "paris",
           "libraries": {}
         }
       },
@@ -1353,8 +1353,8 @@
       }
     },
     "src/interface/IDSCEngine.sol": {
-      "lastModificationDate": 1685914069731,
-      "contentHash": "54e82d66047a3a3c223a22b825756ee8",
+      "lastModificationDate": 1686086095913,
+      "contentHash": "c76144096fd6debcfffdef3d3a711eca",
       "sourceName": "src/interface/IDSCEngine.sol",
       "solcConfig": {
         "settings": {
@@ -1380,7 +1380,7 @@
               ]
             }
           },
-          "evmVersion": "london",
+          "evmVersion": "paris",
           "libraries": {}
         }
       },
@@ -1393,8 +1393,8 @@
       }
     },
     "src/interface/IDecenttializedStableCoin.sol": {
-      "lastModificationDate": 1685910874987,
-      "contentHash": "c9643832c3a3f69f8e4e17f3ba561f37",
+      "lastModificationDate": 1686004386961,
+      "contentHash": "d69f25015d59375a51b632e51c60cfa0",
       "sourceName": "src/interface/IDecenttializedStableCoin.sol",
       "solcConfig": {
         "settings": {
@@ -1420,7 +1420,7 @@
               ]
             }
           },
-          "evmVersion": "london",
+          "evmVersion": "paris",
           "libraries": {}
         }
       },
@@ -1433,7 +1433,7 @@
       }
     },
     "src/lib/DSCEngineHelper.sol": {
-      "lastModificationDate": 1685910486210,
+      "lastModificationDate": 1685913800304,
       "contentHash": "2dc449a828002dcd2741e54bdaf07caf",
       "sourceName": "src/lib/DSCEngineHelper.sol",
       "solcConfig": {
@@ -1460,7 +1460,7 @@
               ]
             }
           },
-          "evmVersion": "london",
+          "evmVersion": "paris",
           "libraries": {}
         }
       },
@@ -1473,7 +1473,7 @@
       }
     },
     "src/lib/OracleLib.sol": {
-      "lastModificationDate": 1685912455660,
+      "lastModificationDate": 1685913800304,
       "contentHash": "7e41791daaeee95ef10b5181979e2ee5",
       "sourceName": "src/lib/OracleLib.sol",
       "solcConfig": {
@@ -1500,7 +1500,7 @@
               ]
             }
           },
-          "evmVersion": "london",
+          "evmVersion": "paris",
           "libraries": {}
         }
       },
@@ -1542,7 +1542,7 @@
               ]
             }
           },
-          "evmVersion": "london",
+          "evmVersion": "paris",
           "libraries": {}
         }
       },
@@ -1587,7 +1587,7 @@
               ]
             }
           },
-          "evmVersion": "london",
+          "evmVersion": "paris",
           "libraries": {}
         }
       },
@@ -1627,7 +1627,7 @@
               ]
             }
           },
-          "evmVersion": "london",
+          "evmVersion": "paris",
           "libraries": {}
         }
       },

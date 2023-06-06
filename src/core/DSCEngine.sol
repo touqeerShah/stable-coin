@@ -158,12 +158,7 @@ contract DSCEngine is ReentrancyGuard, IDSCEngine {
         moreThenZero(amountCollateral)
         nonReentrant
     {
-        s_collateralDeposited[msg.sender][tokenCollateralAddress] -= amountCollateral;
-        emit CollateralRedeemed(msg.sender, tokenCollateralAddress, amountCollateral);
-        bool success = IERC20(tokenCollateralAddress).transfer(msg.sender, amountCollateral);
-        if (!success) {
-            revert DSCEngine__TransferFailed();
-        }
+        _redeemCollateral(tokenCollateralAddress, amountCollateral, msg.sender, msg.sender);
         _revertIfHealthFactorIsBroken(msg.sender);
     }
 
@@ -181,11 +176,7 @@ contract DSCEngine is ReentrancyGuard, IDSCEngine {
     }
 
     function bureDsc(uint256 amount) public moreThenZero(amount) nonReentrant {
-        bool success = i_dsc.transferFrom(msg.sender, address(this), amount);
-        if (!success) {
-            revert DSCEngine__TransferFailed();
-        }
-        i_dsc.burn(amount);
+        _burnDSC(msg.sender, msg.sender, amount);
     }
     /*
      * This where we mint our DSC token or clame our collatral into DSC token
@@ -220,11 +211,72 @@ contract DSCEngine is ReentrancyGuard, IDSCEngine {
      * For example, if the price of the collateral plummeted before anyone could be liquidated.
      */
 
-    function liquidate(address collateral, address user, uint256 debtToCover) external nonReentrant {}
+    function liquidate(address collateral, address user, uint256 debtToCover)
+        external
+        moreThenZero(debtToCover)
+        nonReentrant
+    {
+        uint256 startingUSerHealtCheck = _healthFactor(user);
+        if (startingUSerHealtCheck >= MIN_HEALTH_FACTOR) {
+            revert DSCEngine__HealthFactorOk();
+        }
+        // We want to burn their DSC Dept
+        // and take their collateral
+        //bad user : 140ETH , 100 DSC
+        // debToCover = $100
+        // $100 of DSC==?? ETH
+        // 0.05 ETH based on current price
+        uint256 tokenAmountFromDebtCovered = getTokenAmountFromUsd(collateral, debtToCover);
+        // and give bonus of 10%
+        // so we are giving the liquidator $110 of WETH for 100 DSC
+        // we should implement a feature to liquidate in the event the protocol is insilvent
+        // And Swwp wxtra amount into a
+        // 0.05 *0.1 =0.005 Getting 0.055
+        uint256 bonusCollateral = (tokenAmountFromDebtCovered * LIQUIDATION_BONUS) / LIQUIDATION_PRECISION;
+        uint256 totalCollateralToRedeem = tokenAmountFromDebtCovered + bonusCollateral;
+        _redeemCollateral(collateral, totalCollateralToRedeem, user, msg.sender);
+        // whose DSC reduce on
+        // who is pay those DSC ,
+        //amount
+        _burnDSC(user, msg.sender, debtToCover);
+
+        uint256 endingUSerHealtCheck = _healthFactor(user);
+        if (startingUSerHealtCheck <= endingUSerHealtCheck) {
+            revert DSCEngine__HealthFactorNotImporved();
+        }
+
+        _revertIfHealthFactorIsBroken(msg.sender);
+    }
 
     //**************************************************************/
     //              Private and Internal funcation
     //**************************************************************/
+
+    /**
+     * @dev Don't allow any one call this one without call health check
+     * @param onBehalfOf whose token need to burn
+     * @param dscFrom whose is transfer token behave of him
+     * @param amount what i dept amount to pay
+     */
+    function _burnDSC(address onBehalfOf, address dscFrom, uint256 amount) private {
+        s_DSCMinted[onBehalfOf] -= amount;
+        bool success = i_dsc.transferFrom(dscFrom, address(this), amount);
+        if (!success) {
+            revert DSCEngine__TransferFailed();
+        }
+        i_dsc.burn(amount);
+    }
+
+    function _redeemCollateral(address tokenCollateralAddress, uint256 amountCollateral, address from, address to)
+        private
+    {
+        s_collateralDeposited[from][tokenCollateralAddress] -= amountCollateral;
+        emit CollateralRedeemed(from, to, tokenCollateralAddress, amountCollateral);
+        bool success = IERC20(tokenCollateralAddress).transfer(to, amountCollateral);
+        if (!success) {
+            revert DSCEngine__TransferFailed();
+        }
+    }
 
     /**
      * This will check health factor and  if not health reverted
@@ -261,23 +313,6 @@ contract DSCEngine is ReentrancyGuard, IDSCEngine {
         return _calculateHealthFactor(totalDscMinted, collateralValueInUsd);
     }
 
-    /**
-     *
-     * This will connect to Chainlink and get latest Price of the Collataral token which hel to calculate
-     * The Total value user owen
-     * @param token address of collateral token
-     * @param amount amount  he hold against that token
-     */
-
-    function getUsdValue(address token, uint256 amount) public view returns (uint256) {
-        AggregatorV3Interface priceFeed = AggregatorV3Interface(s_priceFeeds[token]);
-        (, int256 price,,,) = priceFeed.staleCheckLatestRoundData();
-        // 1 ETH = 1000 USD
-        // The returned value from Chainlink will be 1000 * 1e8
-        // Most USD pairs have 8 decimals, so we will just pretend they all do
-        // We want to have everything in terms of WEI, so we add 10 zeros at the end
-        return ((uint256(price) * ADDITIONAL_FEED_PRECISION) * amount) / PRECISION;
-    }
     /**
      *  this will calculat how much he allow to mint more based on his collateral
      * @param totalDscMinted amount already minted
@@ -316,5 +351,75 @@ contract DSCEngine is ReentrancyGuard, IDSCEngine {
             totalCollateralValueInUsd += getUsdValue(token, amount);
         }
         return totalCollateralValueInUsd;
+    }
+    /**
+     *
+     * This will connect to Chainlink and get latest Price of the Collataral token which hel to calculate
+     * The Total value user owen
+     * @param token address of collateral token
+     * @param amount amount  he hold against that token
+     */
+
+    function getUsdValue(address token, uint256 amount) public view returns (uint256) {
+        AggregatorV3Interface priceFeed = AggregatorV3Interface(s_priceFeeds[token]);
+        (, int256 price,,,) = priceFeed.staleCheckLatestRoundData();
+        // 1 ETH = 1000 USD
+        // The returned value from Chainlink will be 1000 * 1e8
+        // Most USD pairs have 8 decimals, so we will just pretend they all do
+        // We want to have everything in terms of WEI, so we add 10 zeros at the end
+        return ((uint256(price) * ADDITIONAL_FEED_PRECISION) * amount) / PRECISION;
+    }
+    /**
+     *
+     * This will covert the collateral amount which we need to liquidated into dollar
+     * The Total value user owen
+     * @param token address of collateral token
+     * @param usdAmountInWei amount  he hold against that token
+     */
+
+    function getTokenAmountFromUsd(address token, uint256 usdAmountInWei) public view returns (uint256) {
+        AggregatorV3Interface priceFeed = AggregatorV3Interface(s_priceFeeds[token]);
+        (, int256 price,,,) = priceFeed.staleCheckLatestRoundData();
+        // 1 ETH = 1000 USD
+        // The returned value from Chainlink will be 1000 * 1e8
+        // Most USD pairs have 8 decimals, so we will just pretend they all do
+        // We want to have everything in terms of WEI, so we add 10 zeros at the end
+        return ((usdAmountInWei * PRECISION) / (uint256(price) * ADDITIONAL_FEED_PRECISION));
+    }
+
+    function getPrecision() external pure returns (uint256) {
+        return PRECISION;
+    }
+
+    function getAdditionalFeedPrecision() external pure returns (uint256) {
+        return ADDITIONAL_FEED_PRECISION;
+    }
+
+    function getLiquidationThreshold() external pure returns (uint256) {
+        return LIQUIDATION_THRESHOLD;
+    }
+
+    function getLiquidationBonus() external pure returns (uint256) {
+        return LIQUIDATION_BONUS;
+    }
+
+    function getMinHealthFactor() external pure returns (uint256) {
+        return MIN_HEALTH_FACTOR;
+    }
+
+    function getCollateralTokens() external view returns (address[] memory) {
+        return s_collateralTokens;
+    }
+
+    function getDsc() external view returns (address) {
+        return address(i_dsc);
+    }
+
+    function getCollateralTokenPriceFeed(address token) external view returns (address) {
+        return s_priceFeeds[token];
+    }
+
+    function getHealthFactor(address user) external view returns (uint256) {
+        return _healthFactor(user);
     }
 }

@@ -6,7 +6,9 @@ interface IDSCEngine {
     //Events
     event CollateralDeposited(address indexed depositor, uint256 indexed amount);
     event MinDsc(address indexed minter, uint256 indexed amount);
-    event CollateralRedeemed(address indexed user, address indexed token, uint256 indexed amount);
+    event CollateralRedeemed(
+        address indexed redeemFrom, address indexed redeemto, address indexed token, uint256 amount
+    );
 
     // Error
 
@@ -18,6 +20,8 @@ interface IDSCEngine {
     error DSCEngine__TransferFailed();
     error DSCEngine__BreaksHealthFactor(uint256 userHealthFactor);
     error DSCEngine__MintFailed();
+    error DSCEngine__HealthFactorOk();
+    error DSCEngine__HealthFactorNotImporved();
 
     function depostCollateralAndMintDsc(address tokenCollateralAddress, uint256 amountCollateral, uint256 amountToMint)
         external;
@@ -36,7 +40,7 @@ interface IDSCEngine {
     function liquidate(address collateral, address user, uint256 debtToCover) external;
 
     function getHealthFactory() external;
-
+    function getTokenAmountFromUsd(address token, uint256 usdAmountInWei) external view returns (uint256);
     // Function created for internal used
     // function _revertIfHealthFactorIsBroken(address user) external view;
     // function _getAccountInformation(address user) external view returns (uint256);
