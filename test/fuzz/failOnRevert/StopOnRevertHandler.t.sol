@@ -133,13 +133,13 @@ contract StopOnRevertHandler is StdInvariant, Test {
     /////////////////////////////
     // Aggregator //
     /////////////////////////////
-    function updateCollateralPrice(uint96 newPrice, uint256 collateralSeed) public {
-        int256 intNewPrice = int256(uint256(newPrice));
-        ERC20Mock collateral = _getCollateralFromSeed(collateralSeed);
-        MockV3Aggregator priceFeed = MockV3Aggregator(engine.getCollateralTokenPriceFeed(address(collateral)));
+    // function updateCollateralPrice(uint96 newPrice, uint256 collateralSeed) public {
+    //     int256 intNewPrice = int256(uint256(newPrice));
+    //     ERC20Mock collateral = _getCollateralFromSeed(collateralSeed);
+    //     MockV3Aggregator priceFeed = MockV3Aggregator(engine.getCollateralTokenPriceFeed(address(collateral)));
 
-        priceFeed.updateAnswer(intNewPrice);
-    }
+    //     priceFeed.updateAnswer(intNewPrice);
+    // }
 
     /// Helper Functions
     // this will allow to give one of two valid collateral allow URL in our case
