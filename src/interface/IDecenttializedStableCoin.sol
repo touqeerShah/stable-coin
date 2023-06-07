@@ -11,6 +11,7 @@ interface IDecenttializedStableCoin {
     error DecentralizedStableCoin__NotZeroAddress();
 
     function burn(uint256 _amount) external;
+    function balanceOf(address _amount) external view returns (uint256);
 
     function mint(address _to, uint256 _amount) external returns (bool);
     function transferFrom(address from, address to, uint256 amount) external returns (bool);

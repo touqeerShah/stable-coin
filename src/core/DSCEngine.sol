@@ -31,6 +31,7 @@ import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "./../interface/IDSCEngine.sol";
 import {IDecenttializedStableCoin} from "./../interface/IDecenttializedStableCoin.sol";
+import "forge-std/console.sol";
 
 /*
  * @title DSCEngine
@@ -138,7 +139,11 @@ contract DSCEngine is ReentrancyGuard, IDSCEngine {
         isAllowedToken(tokenCollateralAddress)
         nonReentrant
     {
+        // console.log(msg.sender, "s_collateralDeposited", tokenCollateralAddress);
+
         s_collateralDeposited[msg.sender][tokenCollateralAddress] += amountCollateral;
+        // console.log("s_collateralDeposited", s_collateralDeposited[msg.sender][tokenCollateralAddress]);
+
         emit CollateralDeposited(msg.sender, amountCollateral);
         bool success = IERC20(tokenCollateralAddress).transferFrom(msg.sender, address(this), amountCollateral);
         if (!success) {
@@ -173,6 +178,7 @@ contract DSCEngine is ReentrancyGuard, IDSCEngine {
     {
         bureDsc(amountToBurn);
         redeemCollateral(tokenCollateralAddress, amountCollateral);
+        _revertIfHealthFactorIsBroken(msg.sender);
     }
 
     function bureDsc(uint256 amount) public moreThenZero(amount) nonReentrant {
@@ -264,7 +270,7 @@ contract DSCEngine is ReentrancyGuard, IDSCEngine {
         if (!success) {
             revert DSCEngine__TransferFailed();
         }
-        i_dsc.burn(amount);
+        // i_dsc.burn(amount);
     }
 
     function _redeemCollateral(address tokenCollateralAddress, uint256 amountCollateral, address from, address to)
@@ -290,27 +296,12 @@ contract DSCEngine is ReentrancyGuard, IDSCEngine {
     }
 
     /**
-     * Get all the user Details about his account like how much he already minted and total collateral value in dollars
-     * @param user address of user who mint the token
-     * @return totalDscMinted
-     * @return collateralValueInUsd
-     */
-    function _getAccountInformation(address user)
-        private
-        view
-        returns (uint256 totalDscMinted, uint256 collateralValueInUsd)
-    {
-        totalDscMinted = s_DSCMinted[user];
-        collateralValueInUsd = getAccountCollateralValue(user);
-    }
-
-    /**
      * This will check that user is not going to mint more token the collateral and not going to liquitaed
      * @param user address of user who mint the token
      */
     function _healthFactor(address user) private view returns (uint256) {
-        (uint256 totalDscMinted, uint256 collateralValueInUsd) = _getAccountInformation(user);
-        return _calculateHealthFactor(totalDscMinted, collateralValueInUsd);
+        (uint256 totalDscMinted, uint256 collateralValueInUsd) = getAccountInformation(user);
+        return calculateHealthFactor(totalDscMinted, collateralValueInUsd);
     }
 
     /**
@@ -318,23 +309,6 @@ contract DSCEngine is ReentrancyGuard, IDSCEngine {
      * @param totalDscMinted amount already minted
      * @param collateralValueInUsd amount of collateral in current token price in dollars
      */
-
-    function _calculateHealthFactor(uint256 totalDscMinted, uint256 collateralValueInUsd)
-        internal
-        pure
-        returns (uint256)
-    {
-        if (totalDscMinted == 0) return type(uint256).max;
-        /**
-         * $150 ETH / 100 DSC =1.5
-         * 150 * 50% =7500/100 = (75/100)<1 // this problem and liqu=iuidated
-         * 1000ETH/ 100DSC
-         * 1000 * 50% = 50000/100= 500/100 DSC = 5>1 now it is fine
-         */
-
-        uint256 collateralAdjustedForThreshold = (collateralValueInUsd * LIQUIDATION_THRESHOLD) / LIQUIDATION_PRECISION;
-        return (collateralAdjustedForThreshold * PRECISION) / totalDscMinted;
-    }
 
     //**************************************************************/
     //              Public and View funcation
@@ -369,6 +343,26 @@ contract DSCEngine is ReentrancyGuard, IDSCEngine {
         // We want to have everything in terms of WEI, so we add 10 zeros at the end
         return ((uint256(price) * ADDITIONAL_FEED_PRECISION) * amount) / PRECISION;
     }
+
+    function calculateHealthFactor(uint256 totalDscMinted, uint256 collateralValueInUsd)
+        public
+        pure
+        returns (uint256)
+    {
+        // this will check if in some case user just deposit and don't mint and Stable coin
+        // then when we calculate healt factor it will be  divided by zero which is not good in math
+        if (totalDscMinted == 0) return type(uint256).max;
+        /**
+         * $150 ETH / 100 DSC =1.5
+         * 150 * 50% =7500/100 = (75/100)<1 // this problem and liqu=iuidated
+         * 1000ETH/ 100DSC
+         * 1000 * 50% = 50000/100= 500/100 DSC = 5>1 now it is fine
+         */
+
+        uint256 collateralAdjustedForThreshold = (collateralValueInUsd * LIQUIDATION_THRESHOLD) / LIQUIDATION_PRECISION;
+        return (collateralAdjustedForThreshold * PRECISION) / totalDscMinted;
+    }
+
     /**
      *
      * This will covert the collateral amount which we need to liquidated into dollar
@@ -387,8 +381,29 @@ contract DSCEngine is ReentrancyGuard, IDSCEngine {
         return ((usdAmountInWei * PRECISION) / (uint256(price) * ADDITIONAL_FEED_PRECISION));
     }
 
+    /**
+     * Get all the user Details about his account like how much he already minted and total collateral value in dollars
+     * @param user address of user who mint the token
+     * @return totalDscMinted
+     * @return collateralValueInUsd
+     */
+    function getAccountInformation(address user)
+        public
+        view
+        returns (uint256 totalDscMinted, uint256 collateralValueInUsd)
+    {
+        totalDscMinted = s_DSCMinted[user];
+        collateralValueInUsd = getAccountCollateralValue(user);
+    }
+
     function getPrecision() external pure returns (uint256) {
         return PRECISION;
+    }
+
+    function getCollateralDeposited(address tokenCollateralAddress) external view returns (uint256) {
+        // console.log(msg.sender, "getCollateralDeposited", tokenCollateralAddress);
+
+        return s_collateralDeposited[msg.sender][tokenCollateralAddress];
     }
 
     function getAdditionalFeedPrecision() external pure returns (uint256) {
