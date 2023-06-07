@@ -33,7 +33,7 @@ interface IDSCEngine {
 
     function redeemCollateral(address tokenCollateralAddress, uint256 amountCollateral) external;
 
-    function bureDsc(uint256 amount) external;
+    function burnDsc(uint256 amount) external;
 
     function minDsc(uint256 amountDscToMint) external;
 

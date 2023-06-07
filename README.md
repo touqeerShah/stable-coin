@@ -26,10 +26,12 @@ We user Foundry for development and deployment of the porject.
 8. Run Specfic Test `forge test -m nameOfFunction`  and `-vvv` for get more details in case of fail  Local or if one chain `forge test -m nameOfFunction --fork-url $SEPOLIA_RPC_RUL`
 9. To check test coverage and analys contract ` forge coverage`
 
+10. We move to fuzz testing in which we are main focus is on statfull testing (invariants) we config our `foundry.toml` file that run the function in sequence define in handler to make test more effective `fail_on_revert` is main one if you want to continue testing even it fails to check all other possibility.
 
+11. Get list of all function in contract `forge inspect Contract-Nmae methods`
 ### Read Doc 
 
-AAve For health factor which mean it health to allow user to mint more stable coin agistn his/her collateral 
+AAve For health factor which mean it health to allow user to mint more stable coin agist his/her collateral 
 
 ```
 https://docs.aave.com/risk/asset-risk/risk-parameters#health-factor

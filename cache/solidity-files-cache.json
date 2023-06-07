@@ -1258,8 +1258,8 @@
       }
     },
     "src/core/DSCEngine.sol": {
-      "lastModificationDate": 1686143972437,
-      "contentHash": "89c84a4722a29f138f07229a2b3284f4",
+      "lastModificationDate": 1686171162141,
+      "contentHash": "628c582343e9c37f8766a1eedb5f9741",
       "sourceName": "src/core/DSCEngine.sol",
       "solcConfig": {
         "settings": {
@@ -1354,8 +1354,8 @@
       }
     },
     "src/interface/IDSCEngine.sol": {
-      "lastModificationDate": 1686086095913,
-      "contentHash": "c76144096fd6debcfffdef3d3a711eca",
+      "lastModificationDate": 1686166860681,
+      "contentHash": "a6b3ac8cfd3554973c5294eeebf358d9",
       "sourceName": "src/interface/IDSCEngine.sol",
       "solcConfig": {
         "settings": {
@@ -1600,9 +1600,162 @@
         }
       }
     },
+    "test/fuzz/failOnRevert/StopOnRevertHandler.t.sol": {
+      "lastModificationDate": 1686171258243,
+      "contentHash": "5dee587b8dd3db1e030bc21f00cb5ae1",
+      "sourceName": "test/fuzz/failOnRevert/StopOnRevertHandler.t.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "metadata": {
+            "bytecodeHash": "ipfs",
+            "appendCBOR": true
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ]
+            }
+          },
+          "evmVersion": "paris",
+          "libraries": {}
+        }
+      },
+      "imports": [
+        "lib/chainlink-brownie-contracts/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol",
+        "lib/forge-std/lib/ds-test/src/test.sol",
+        "lib/forge-std/src/Base.sol",
+        "lib/forge-std/src/Script.sol",
+        "lib/forge-std/src/StdAssertions.sol",
+        "lib/forge-std/src/StdChains.sol",
+        "lib/forge-std/src/StdCheats.sol",
+        "lib/forge-std/src/StdError.sol",
+        "lib/forge-std/src/StdInvariant.sol",
+        "lib/forge-std/src/StdJson.sol",
+        "lib/forge-std/src/StdMath.sol",
+        "lib/forge-std/src/StdStorage.sol",
+        "lib/forge-std/src/StdStyle.sol",
+        "lib/forge-std/src/StdUtils.sol",
+        "lib/forge-std/src/Test.sol",
+        "lib/forge-std/src/Vm.sol",
+        "lib/forge-std/src/console.sol",
+        "lib/forge-std/src/console2.sol",
+        "lib/forge-std/src/interfaces/IMulticall3.sol",
+        "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
+        "lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol",
+        "lib/openzeppelin-contracts/contracts/token/ERC20/ERC20.sol",
+        "lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol",
+        "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Burnable.sol",
+        "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/IERC20Metadata.sol",
+        "lib/openzeppelin-contracts/contracts/utils/Context.sol",
+        "script/DeployDSC.s.sol",
+        "script/HelperConfig.s.sol",
+        "src/core/DSCEngine.sol",
+        "src/core/DecenttializedStableCoin.sol",
+        "src/interface/IDSCEngine.sol",
+        "src/interface/IDecenttializedStableCoin.sol",
+        "src/lib/OracleLib.sol",
+        "src/mock/ERC20Mock.sol",
+        "src/mock/MockV3Aggregator.sol"
+      ],
+      "versionRequirement": "^0.8.19",
+      "artifacts": {
+        "StopOnRevertHandler": {
+          "0.8.19+commit.7dd6d404.Darwin.appleclang": "StopOnRevertHandler.t.sol/StopOnRevertHandler.json"
+        }
+      }
+    },
+    "test/fuzz/failOnRevert/StopOnRevertInvariants.t.sol": {
+      "lastModificationDate": 1686170658248,
+      "contentHash": "4b39f4aa908bbe71ee226633c7a2a9d8",
+      "sourceName": "test/fuzz/failOnRevert/StopOnRevertInvariants.t.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "metadata": {
+            "bytecodeHash": "ipfs",
+            "appendCBOR": true
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ]
+            }
+          },
+          "evmVersion": "paris",
+          "libraries": {}
+        }
+      },
+      "imports": [
+        "lib/chainlink-brownie-contracts/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol",
+        "lib/forge-std/lib/ds-test/src/test.sol",
+        "lib/forge-std/src/Base.sol",
+        "lib/forge-std/src/Script.sol",
+        "lib/forge-std/src/StdAssertions.sol",
+        "lib/forge-std/src/StdChains.sol",
+        "lib/forge-std/src/StdCheats.sol",
+        "lib/forge-std/src/StdError.sol",
+        "lib/forge-std/src/StdInvariant.sol",
+        "lib/forge-std/src/StdJson.sol",
+        "lib/forge-std/src/StdMath.sol",
+        "lib/forge-std/src/StdStorage.sol",
+        "lib/forge-std/src/StdStyle.sol",
+        "lib/forge-std/src/StdUtils.sol",
+        "lib/forge-std/src/Test.sol",
+        "lib/forge-std/src/Vm.sol",
+        "lib/forge-std/src/console.sol",
+        "lib/forge-std/src/console2.sol",
+        "lib/forge-std/src/interfaces/IMulticall3.sol",
+        "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
+        "lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol",
+        "lib/openzeppelin-contracts/contracts/token/ERC20/ERC20.sol",
+        "lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol",
+        "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/ERC20Burnable.sol",
+        "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/IERC20Metadata.sol",
+        "lib/openzeppelin-contracts/contracts/utils/Context.sol",
+        "script/DeployDSC.s.sol",
+        "script/HelperConfig.s.sol",
+        "src/core/DSCEngine.sol",
+        "src/core/DecenttializedStableCoin.sol",
+        "src/interface/IDSCEngine.sol",
+        "src/interface/IDecenttializedStableCoin.sol",
+        "src/lib/OracleLib.sol",
+        "src/mock/ERC20Mock.sol",
+        "src/mock/MockV3Aggregator.sol",
+        "test/fuzz/failOnRevert/StopOnRevertHandler.t.sol"
+      ],
+      "versionRequirement": "^0.8.19",
+      "artifacts": {
+        "StopOnRevertInvariants": {
+          "0.8.19+commit.7dd6d404.Darwin.appleclang": "StopOnRevertInvariants.t.sol/StopOnRevertInvariants.json"
+        }
+      }
+    },
     "test/unit/DSCEngineTest.t.sol": {
-      "lastModificationDate": 1686144049350,
-      "contentHash": "bf8d2cea1c88e488164fe1a6f48023c5",
+      "lastModificationDate": 1686144061204,
+      "contentHash": "fc3088060a244fa8dcf5f9295a897767",
       "sourceName": "test/unit/DSCEngineTest.t.sol",
       "solcConfig": {
         "settings": {

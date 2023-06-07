@@ -176,12 +176,12 @@ contract DSCEngine is ReentrancyGuard, IDSCEngine {
     function redeemCollateralFroDec(address tokenCollateralAddress, uint256 amountCollateral, uint256 amountToBurn)
         external
     {
-        bureDsc(amountToBurn);
+        burnDsc(amountToBurn);
         redeemCollateral(tokenCollateralAddress, amountCollateral);
         _revertIfHealthFactorIsBroken(msg.sender);
     }
 
-    function bureDsc(uint256 amount) public moreThenZero(amount) nonReentrant {
+    function burnDsc(uint256 amount) public moreThenZero(amount) nonReentrant {
         _burnDSC(msg.sender, msg.sender, amount);
     }
     /*
@@ -265,6 +265,9 @@ contract DSCEngine is ReentrancyGuard, IDSCEngine {
      * @param amount what i dept amount to pay
      */
     function _burnDSC(address onBehalfOf, address dscFrom, uint256 amount) private {
+        // if (s_DSCMinted[onBehalfOf] < amount) {
+        //     revert();
+        // }
         s_DSCMinted[onBehalfOf] -= amount;
         bool success = i_dsc.transferFrom(dscFrom, address(this), amount);
         if (!success) {
@@ -400,10 +403,14 @@ contract DSCEngine is ReentrancyGuard, IDSCEngine {
         return PRECISION;
     }
 
-    function getCollateralDeposited(address tokenCollateralAddress) external view returns (uint256) {
+    function getCollateralDeposited(address user, address tokenCollateralAddress) external view returns (uint256) {
         // console.log(msg.sender, "getCollateralDeposited", tokenCollateralAddress);
 
-        return s_collateralDeposited[msg.sender][tokenCollateralAddress];
+        return s_collateralDeposited[user][tokenCollateralAddress];
+    }
+
+    function getCollateralBalanceOfUser(address user, address token) external view returns (uint256) {
+        return s_collateralDeposited[user][token];
     }
 
     function getAdditionalFeedPrecision() external pure returns (uint256) {
