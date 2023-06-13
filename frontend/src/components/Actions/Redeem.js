@@ -73,12 +73,12 @@ export default function Redeem() {
             //   props.setStartDate(e.currentTarget.value);
           }}
         />
-        <label for="vehicle1" className="text-colour mt-2 mb-4">
+        <label htmlFor="vehicle1" className="text-colour mt-2 mb-4">
           {" "}
           Want to Burn Some Coin{" "}
         </label>
         <br />
-        <label for="vehicle1" className=" w-full   text-colour">
+        <label htmlFor="vehicle1" className=" w-full   text-colour">
           {" "}
           Amount Redeem{" "}
         </label>
@@ -94,7 +94,10 @@ export default function Redeem() {
             setRedeem(e.currentTarget.value);
           }}
         />
-        <label for="vehicle1" className=" w-full  mt-2  float-left text-colour">
+        <label
+          htmlFor="vehicle1"
+          className=" w-full  mt-2  float-left text-colour"
+        >
           {" "}
           Collateral (){" "}
         </label>
@@ -102,7 +105,7 @@ export default function Redeem() {
           <>
             {" "}
             <label
-              for="vehicle1"
+              htmlFor="vehicle1"
               className=" w-full  p-2 mt-2  float-left text-colour"
             >
               {" "}

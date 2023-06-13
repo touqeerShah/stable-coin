@@ -52,24 +52,24 @@ contract StopOnRevertHandler is StdInvariant, Test {
         count++;
     }
 
-    // function redeemCollateral(uint256 collateralSeed, uint256 amountCollateral) public {
-    //     ERC20Mock collateral = _getCollateralFromSeed(collateralSeed);
-    //     amountCollateral = bound(amountCollateral, 1, MAX_DEPOSIT_SIZE);
-    //     vm.startPrank(msg.sender);
-    //     collateral.mint(msg.sender, amountCollateral);
-    //     collateral.approve(address(engine), amountCollateral);
-    //     engine.depostCollateral(address(collateral), amountCollateral);
+    function redeemCollateral(uint256 collateralSeed, uint256 amountCollateral) public {
+        ERC20Mock collateral = _getCollateralFromSeed(collateralSeed);
+        amountCollateral = bound(amountCollateral, 1, MAX_DEPOSIT_SIZE);
+        vm.startPrank(msg.sender);
+        collateral.mint(msg.sender, amountCollateral);
+        collateral.approve(address(engine), amountCollateral);
+        engine.depostCollateral(address(collateral), amountCollateral);
 
-    //     uint256 maxCollateral = engine.getCollateralBalanceOfUser(msg.sender, address(collateral));
-    //     console.log("maxCollateral", maxCollateral);
+        uint256 maxCollateral = engine.getCollateralBalanceOfUser(msg.sender, address(collateral));
+        console.log("maxCollateral", maxCollateral);
 
-    //     amountCollateral = bound(amountCollateral, 0, maxCollateral);
-    //     if (amountCollateral == 0) {
-    //         return;
-    //     }
-    //     engine.redeemCollateral(address(collateral), amountCollateral);
-    //     vm.stopPrank();
-    // }
+        amountCollateral = bound(amountCollateral, 0, maxCollateral);
+        if (amountCollateral == 0) {
+            return;
+        }
+        engine.redeemCollateral(address(collateral), amountCollateral);
+        vm.stopPrank();
+    }
 
     function burnDsc(uint256 amountDsc, uint256 addressSeed) public {
         // Must burn more than 0

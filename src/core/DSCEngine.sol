@@ -26,7 +26,7 @@
 
 pragma solidity 0.8.19;
 
-import {OracleLib, AggregatorV3Interface} from "../lib/OracleLib.sol";
+import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "./../interface/IDSCEngine.sol";
@@ -58,7 +58,7 @@ contract DSCEngine is ReentrancyGuard, IDSCEngine {
     ///////////////////
     // Types
     ///////////////////
-    using OracleLib for AggregatorV3Interface;
+    // using OracleLib for AggregatorV3Interface;
 
     /// State Varaibles   *
     IDecenttializedStableCoin private immutable i_dsc;
@@ -339,7 +339,7 @@ contract DSCEngine is ReentrancyGuard, IDSCEngine {
 
     function getUsdValue(address token, uint256 amount) public view returns (uint256) {
         AggregatorV3Interface priceFeed = AggregatorV3Interface(s_priceFeeds[token]);
-        (, int256 price,,,) = priceFeed.staleCheckLatestRoundData();
+        (, int256 price,,,) = priceFeed.latestRoundData();
         // 1 ETH = 1000 USD
         // The returned value from Chainlink will be 1000 * 1e8
         // Most USD pairs have 8 decimals, so we will just pretend they all do
@@ -376,7 +376,7 @@ contract DSCEngine is ReentrancyGuard, IDSCEngine {
 
     function getTokenAmountFromUsd(address token, uint256 usdAmountInWei) public view returns (uint256) {
         AggregatorV3Interface priceFeed = AggregatorV3Interface(s_priceFeeds[token]);
-        (, int256 price,,,) = priceFeed.staleCheckLatestRoundData();
+        (, int256 price,,,) = priceFeed.latestRoundData();
         // 1 ETH = 1000 USD
         // The returned value from Chainlink will be 1000 * 1e8
         // Most USD pairs have 8 decimals, so we will just pretend they all do

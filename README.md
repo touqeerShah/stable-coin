@@ -21,7 +21,7 @@ We user Foundry for development and deployment of the porject.
 4. we create two contract Stable ERC20 coin and Engine
 5. we set threshold to let said %150  to collateral mean we never all system to be go down to this if it happend we liquidated coin to make it stable token price 
     - Ask someone to liqiuidated there coin in return he will recevied reward of collateral which always more then the actual coint values to motivate user to make system stable
-6. to run network local you `avvil` it give you network some as `hardhat node` 
+6. to run network local you `anvil` it give you network some as `hardhat node` 
 7. compile `forge build`
 8. Run Specfic Test `forge test -m nameOfFunction`  and `-vvv` for get more details in case of fail  Local or if one chain `forge test -m nameOfFunction --fork-url $SEPOLIA_RPC_RUL`
 9. To check test coverage and analys contract ` forge coverage`
@@ -29,6 +29,13 @@ We user Foundry for development and deployment of the porject.
 10. We move to fuzz testing in which we are main focus is on statfull testing (invariants) we config our `foundry.toml` file that run the function in sequence define in handler to make test more effective `fail_on_revert` is main one if you want to continue testing even it fails to check all other possibility.
 
 11. Get list of all function in contract `forge inspect Contract-Nmae methods`
+
+12. also create `.secret` for you `env` variables add config into `foundry.toml` file.
+
+```
+fs_permissions = [{ access = "read", path = "./"}]
+
+```
 ### Read Doc 
 
 AAve For health factor which mean it health to allow user to mint more stable coin agist his/her collateral 
@@ -39,6 +46,60 @@ https://docs.aave.com/risk/asset-risk/risk-parameters#health-factor
 To see Price Seed details on chainlink
 ```
 https://docs.chain.link/data-feeds/price-feeds/addresses
+```
+
+### Command to deploy contract
+```
+export PROVIDER_URL=http://127.0.0.1:8545
+export PRIVATE_KEY=0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
+forge create --rpc-url "http://127.0.0.1:8545"  --private-key $PRIVATE_KEY src/lib/OracleLib.sol:OracleLib
+
+
+forge create --rpc-url $PROVIDER_URL  --constructor-args 8 100000000000   --private-key $PRIVATE_KEY src/mock/MockV3Aggregator.sol:MockV3Aggregator
+
+
+
+btcUsdPriceFeed BTC Address 0x5FbDB2315678afecb367f032d93F642f64180aa3
+sepolia btcUsdPriceFeed BTC Address 0xAB8d249De93951b2c53284d97030B3e715172ff3
+
+forge create --rpc-url $PROVIDER_URL  --constructor-args 8 200000000000   --private-key $PRIVATE_KEY src/mock/MockV3Aggregator.sol:MockV3Aggregator
+
+
+ethUsdPriceFeed  0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512
+sepolia ethUsdPriceFeed  0x8aa3Fe2bb955443691dAca5f6A7CCF521CbE6a6a
+
+
+forge create --rpc-url $PROVIDER_URL  --constructor-args "WETH" "WETH" 0x0308b55f7bACa0324Ba6Ff06b22Af1B4e5d71a74 200000000000   --private-key $PRIVATE_KEY src/mock/ERC20Mock.sol:ERC20Mock
+
+wethMock 0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0
+sepolia wethMock 0x682f6Aa39072dD888b4A5ee98e1BAe97732b4e5C
+
+forge create --rpc-url $PROVIDER_URL  --constructor-args "WBTC" "WBTC" 0x0308b55f7bACa0324Ba6Ff06b22Af1B4e5d71a74 200000000000   --private-key $PRIVATE_KEY src/mock/ERC20Mock.sol:ERC20Mock
+
+wbtcMock 0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9
+sepolia wbtcMock 0xD3b9689aa79Fff82AAdC0798B59090799761E6de
+
+
+
+forge create --rpc-url $PROVIDER_URL --private-key $PRIVATE_KEY src/core/DecenttializedStableCoin.sol:DecentralizedStableCoin
+
+
+DecentralizedStableCoin 0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9
+sepolia DecentralizedStableCoin 0xaE6EB26cC7685C9225A27D1084D99758E4e3fb54
+
+export tokenAddresses=[0xD3b9689aa79Fff82AAdC0798B59090799761E6de,0x682f6Aa39072dD888b4A5ee98e1BAe97732b4e5C]
+export priceFeedAddresses=[0xAB8d249De93951b2c53284d97030B3e715172ff3,0x8aa3Fe2bb955443691dAca5f6A7CCF521CbE6a6a]
+
+
+forge create --rpc-url $PROVIDER_URL  --constructor-args $tokenAddresses $priceFeedAddresses 0xaE6EB26cC7685C9225A27D1084D99758E4e3fb54   --private-key $PRIVATE_KEY src/core/DSCEngine.sol:DSCEngine
+
+
+DSCEngine 0x5FC8d32690cc91D4c39d9d3abcBD16989F875707
+sepolia DSCEngine 0x88b8f0Fd5ec86Bd3623Ca700A780A8e301B25ec8
+
+forge script script/DeployDSC.s.sol:DeployDSC --broadcast --verify --rpc-url ${GOERLI_RPC_URL}
+
+
 ```
 # Thank you!
 

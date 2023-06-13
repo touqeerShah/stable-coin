@@ -29,7 +29,7 @@ export default function Mint() {
   return (
     <form onSubmit={handleSubmit(signDocument)}>
       <div className="pt-6    ">
-        <label for="vehicle1" className=" w-full   text-colour">
+        <label htmlFor="vehicle1" className=" w-full   text-colour">
           {" "}
           Mint stable Coint{" "}
         </label>
@@ -45,7 +45,10 @@ export default function Mint() {
             setDeposit(e.currentTarget.value);
           }}
         />
-        <label for="vehicle1" className=" w-full  mt-2  float-left text-colour">
+        <label
+          htmlFor="vehicle1"
+          className=" w-full  mt-2  float-left text-colour"
+        >
           {" "}
           Allow To Healthy Mint (0){" "}
         </label>

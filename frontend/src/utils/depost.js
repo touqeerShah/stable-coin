@@ -6,7 +6,7 @@ import ADDRESS from "./../config/address.json"; // import styles from "../styles
  * Deposit Collateral on  Defi to get some stable coins against it
  *
  */
-export const deposit = async (
+export const depositCollateral = async (
   signer,
   tokenCollateralAddress,
   amountCollateral,
@@ -14,6 +14,11 @@ export const deposit = async (
   isMint
 ) => {
   try {
+    amountCollateral = utils
+      .parseUnits(amountCollateral.toString(), 8)
+      .toString();
+    amountToMint = utils.parseUnits(amountToMint.toString(), 8).toString();
+    console.log("amountCollateral", amountCollateral);
     // create a new instance of the token contract
     const dsce = new Contract(ADDRESS.DSCENGIN, DSC_ENGIN, signer);
     // create a new instance of the exchange contract
@@ -45,5 +50,6 @@ export const deposit = async (
     await tx.wait();
   } catch (err) {
     console.error(err);
+    throw err;
   }
 };

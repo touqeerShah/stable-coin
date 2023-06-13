@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import {
-  faMoneyBillTrendUp,
-  faBurn,
-  faMoneyBillTransfer,
-  faCoins,
-} from "@fortawesome/free-solid-svg-icons";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
-export default function Account() {
+export default function Account({
+  collateral,
+  collateralETH,
+  collateralBTC,
+  totalDSC,
+  health,
+} = props) {
   const router = useRouter();
   const [selected, setSelected] = useState("Deposit");
 
@@ -22,10 +20,10 @@ export default function Account() {
               scope="row"
               className="px-6 w-6/12	 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
             >
-              Total WETH Collateral : 100
+              Total WETH Collateral : {collateralETH}
             </th>
             <td className="px-6 w-6/12	 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-              Total WBTC Collateral : 100
+              Total WBTC Collateral : {collateralBTC}
             </td>
           </tr>
           <tr className="bg-white w-full dark:bg-gray-800">
@@ -33,10 +31,10 @@ export default function Account() {
               scope="row"
               className="px-6 w-6/12	 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
             >
-              Total Collateral $ : 100
+              Total Collateral $ : {collateral}
             </th>
             <td className="px-6 w-6/12	 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-              Total DSC Minted : 100
+              Total DSC Minted : {totalDSC}
             </td>
           </tr>
           <tr className="bg-white w-full dark:bg-gray-800">
@@ -44,11 +42,11 @@ export default function Account() {
               scope="row"
               className="px-6 w-6/12	 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
             >
-              Health : 100
+              Health : {totalDSC == 0 ? 0 : health}
             </th>
-            <td className="px-6 w-6/12	 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+            {/* <td className="px-6 w-6/12	 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
               Total Coin Can Minted : 100
-            </td>
+            </td> */}
           </tr>
         </tbody>
       </table>

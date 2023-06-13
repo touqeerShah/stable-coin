@@ -12,7 +12,12 @@ import Deposit from "./Deposit";
 import Mint from "./Mint";
 import Redeem from "./Redeem";
 import Burn from "./Burn";
-export default function Action() {
+export default function Action({
+  walletConnected,
+  web3ModalRef,
+  collateral,
+  totalDSC,
+}) {
   const router = useRouter();
   const [selected, setSelected] = useState("Deposit");
 
@@ -112,7 +117,14 @@ export default function Action() {
           </button>
         </li>
       </ul>
-      {selected == "Deposit" && <Deposit />}
+      {selected == "Deposit" && (
+        <Deposit
+          walletConnected={walletConnected}
+          web3ModalRef={web3ModalRef}
+          collateral={collateral}
+          totalDSC={totalDSC}
+        />
+      )}
       {selected == "Mint" && <Mint />}
       {selected == "Redeem" && <Redeem />}
       {selected == "Burn" && <Burn />}

@@ -41,7 +41,7 @@ export default function Header() {
 
     // If user is not connected to the Goerli network, let them know and throw an error
     const { chainId, ensAddress } = await web3Provider.getNetwork();
-    console.log("chainId =>", ensAddress);
+    console.log("chainId =>", chainId);
     if (chainId !== 11155111) {
       window.alert("Change the network to sepolia");
       throw new Error("Change network to Hardhat");
@@ -70,8 +70,6 @@ export default function Header() {
       });
       await getProviderOrSigner(true);
       setWalletConnected(true);
-      getNumberOfWhitelisted();
-      console.log("--- - - - - - > ", localStorage.getItem("connected"));
     } catch (err) {
       console.error(err);
     }
@@ -79,21 +77,12 @@ export default function Header() {
 
   useEffect(() => {
     let fatch = async () => {
-      console.log("sdada == = = ="), localStorage.getItem("connected");
       if (web3ModalRef && localStorage.getItem("connected")) {
         console.log("inside");
         const handleAccountsChanged = async (accounts) => {
           // eslint-disable-next-line no-console
-          console.log("accountsChanged", accounts);
           await getProviderOrSigner();
           setWalletConnected(true);
-
-          // getNumberOfWhitelisted();
-          // router.reload()
-          // dispatch({
-          //   type: 'SET_ADDRESS',
-          //   address: accounts[0],
-          // })
         };
 
         web3ModalRef.current = new Web3Modal({

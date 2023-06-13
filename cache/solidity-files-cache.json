@@ -236,7 +236,7 @@
       }
     },
     "lib/forge-std/src/StdChains.sol": {
-      "lastModificationDate": 1685896268941,
+      "lastModificationDate": 1686658943900,
       "contentHash": "9c76820952c8f5e2fc02f872dc3afeb4",
       "sourceName": "lib/forge-std/src/StdChains.sol",
       "solcConfig": {
@@ -487,8 +487,8 @@
       }
     },
     "lib/forge-std/src/StdStorage.sol": {
-      "lastModificationDate": 1685896268942,
-      "contentHash": "3cb9868082df39a53927db09dbc21f23",
+      "lastModificationDate": 1686658943886,
+      "contentHash": "eda5297d79f276a2927ffb505b39d8c0",
       "sourceName": "lib/forge-std/src/StdStorage.sol",
       "solcConfig": {
         "settings": {
@@ -1130,8 +1130,8 @@
       }
     },
     "script/DeployDSC.s.sol": {
-      "lastModificationDate": 1685998881823,
-      "contentHash": "9b09fa1f4f43554675cb446ca3151b25",
+      "lastModificationDate": 1686572608435,
+      "contentHash": "196358303e9e47869e63e1883b365355",
       "sourceName": "script/DeployDSC.s.sol",
       "solcConfig": {
         "settings": {
@@ -1187,7 +1187,6 @@
         "src/core/DecenttializedStableCoin.sol",
         "src/interface/IDSCEngine.sol",
         "src/interface/IDecenttializedStableCoin.sol",
-        "src/lib/OracleLib.sol",
         "src/mock/ERC20Mock.sol",
         "src/mock/MockV3Aggregator.sol"
       ],
@@ -1199,8 +1198,8 @@
       }
     },
     "script/HelperConfig.s.sol": {
-      "lastModificationDate": 1685997749384,
-      "contentHash": "273d847168fa4c9a79eb257aa5b8e381",
+      "lastModificationDate": 1686658943883,
+      "contentHash": "d574e1b989f28b5f1417cfaa7698b1ad",
       "sourceName": "script/HelperConfig.s.sol",
       "solcConfig": {
         "settings": {
@@ -1258,8 +1257,8 @@
       }
     },
     "src/core/DSCEngine.sol": {
-      "lastModificationDate": 1686171162141,
-      "contentHash": "628c582343e9c37f8766a1eedb5f9741",
+      "lastModificationDate": 1686578431583,
+      "contentHash": "1c374f367b8bbf893bcfe93e2600f0c2",
       "sourceName": "src/core/DSCEngine.sol",
       "solcConfig": {
         "settings": {
@@ -1295,8 +1294,7 @@
         "lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol",
         "lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol",
         "src/interface/IDSCEngine.sol",
-        "src/interface/IDecenttializedStableCoin.sol",
-        "src/lib/OracleLib.sol"
+        "src/interface/IDecenttializedStableCoin.sol"
       ],
       "versionRequirement": "=0.8.19",
       "artifacts": {
@@ -1601,8 +1599,8 @@
       }
     },
     "test/fuzz/failOnRevert/StopOnRevertHandler.t.sol": {
-      "lastModificationDate": 1686171851788,
-      "contentHash": "88c15a0bf41972e35b9fe071a0be7997",
+      "lastModificationDate": 1686654657397,
+      "contentHash": "3117497ee850312c1d019eb3696aff38",
       "sourceName": "test/fuzz/failOnRevert/StopOnRevertHandler.t.sol",
       "solcConfig": {
         "settings": {
@@ -1665,7 +1663,6 @@
         "src/core/DecenttializedStableCoin.sol",
         "src/interface/IDSCEngine.sol",
         "src/interface/IDecenttializedStableCoin.sol",
-        "src/lib/OracleLib.sol",
         "src/mock/ERC20Mock.sol",
         "src/mock/MockV3Aggregator.sol"
       ],
@@ -1741,7 +1738,6 @@
         "src/core/DecenttializedStableCoin.sol",
         "src/interface/IDSCEngine.sol",
         "src/interface/IDecenttializedStableCoin.sol",
-        "src/lib/OracleLib.sol",
         "src/mock/ERC20Mock.sol",
         "src/mock/MockV3Aggregator.sol",
         "test/fuzz/failOnRevert/StopOnRevertHandler.t.sol"
@@ -1818,7 +1814,6 @@
         "src/core/DecenttializedStableCoin.sol",
         "src/interface/IDSCEngine.sol",
         "src/interface/IDecenttializedStableCoin.sol",
-        "src/lib/OracleLib.sol",
         "src/mock/ERC20Mock.sol",
         "src/mock/MockV3Aggregator.sol"
       ],

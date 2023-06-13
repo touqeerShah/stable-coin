@@ -1,5 +1,5 @@
 import { Contract, utils } from "ethers";
-import { ERC20 } from "../config/abi";
+import { ERC20, DSC_ENGIN } from "../config/abi";
 import ADDRESS from "./../config/address.json"; // import styles from "../styles/Home.module.css";
 
 /**
@@ -16,7 +16,8 @@ export const getTokenBalance = async (signer, tokenCollateralAddress) => {
     );
     // Because CD tokens are an ERC20, user would need to give the contract allowance
     // to take the required number CD tokens out of his contract
-    return await exchangeContract.balance();
+    const address = signer.getAddress();
+    return await exchangeContract.balanceOf(address);
   } catch (err) {
     console.error(err);
   }
@@ -26,6 +27,7 @@ export const getAccountInformation = async (signer) => {
   try {
     const dsce = new Contract(ADDRESS.DSCENGIN, DSC_ENGIN, signer);
     const address = await signer.getAddress();
+
     // Because CD tokens are an ERC20, user would need to give the contract allowance
     // to take the required number CD tokens out of his contract
     return await dsce.getAccountInformation(address);
@@ -34,13 +36,20 @@ export const getAccountInformation = async (signer) => {
   }
 };
 
-export const getHealthFactory = async (signer) => {
+export const calculateHealthFactor = async (
+  signer,
+  totalDscMinted,
+  collateralValueInUsd
+) => {
   try {
     const dsce = new Contract(ADDRESS.DSCENGIN, DSC_ENGIN, signer);
     const address = await signer.getAddress();
     // Because CD tokens are an ERC20, user would need to give the contract allowance
     // to take the required number CD tokens out of his contract
-    return await dsce.getHealthFactory();
+    return await dsce.calculateHealthFactor(
+      totalDscMinted,
+      collateralValueInUsd
+    );
   } catch (err) {
     console.error(err);
   }
@@ -59,6 +68,36 @@ export const getCollateralBalanceOfUser = async (
       address,
       tokenCollateralAddress
     );
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const getMinHealthFactor = async (signer) => {
+  try {
+    const dsce = new Contract(ADDRESS.DSCENGIN, DSC_ENGIN, signer);
+    const address = await signer.getAddress();
+    // Because CD tokens are an ERC20, user would need to give the contract allowance
+    // to take the required number CD tokens out of his contract
+    return await dsce.getMinHealthFactor();
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const getUsdValue = async (signer, tokenCollateralAddress, amount) => {
+  try {
+    const dsce = new Contract(ADDRESS.DSCENGIN, DSC_ENGIN, signer);
+    const address = await signer.getAddress();
+
+    console.log(
+      "getCollateralTokenPriceFeed  =>  ",
+      await dsce.getCollateralTokenPriceFeed(tokenCollateralAddress)
+    );
+
+    // Because CD tokens are an ERC20, user would need to give the contract allowance
+    // to take the required number CD tokens out of his contract
+    return await dsce.getUsdValue(tokenCollateralAddress, amount);
   } catch (err) {
     console.error(err);
   }
