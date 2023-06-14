@@ -90,11 +90,6 @@ export const getUsdValue = async (signer, tokenCollateralAddress, amount) => {
     const dsce = new Contract(ADDRESS.DSCENGIN, DSC_ENGIN, signer);
     const address = await signer.getAddress();
 
-    console.log(
-      "getCollateralTokenPriceFeed  =>  ",
-      await dsce.getCollateralTokenPriceFeed(tokenCollateralAddress)
-    );
-
     // Because CD tokens are an ERC20, user would need to give the contract allowance
     // to take the required number CD tokens out of his contract
     return await dsce.getUsdValue(tokenCollateralAddress, amount);

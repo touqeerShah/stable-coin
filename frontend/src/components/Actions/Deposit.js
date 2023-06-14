@@ -40,51 +40,46 @@ export default function Deposit({
   const balanceLoad = async (currenct) => {
     const signer = await getProviderOrSigner(web3ModalRef, true);
     let balance = await getTokenBalance(signer, currenct);
-    balance = utils.formatEther(utils.parseUnits(balance.toString(), 8));
-    console.log(currenct, "1,balance", parseFloat(balance));
-    const Deposti_USD = await getUsdValue(
-      signer,
-      currenct,
-      parseFloat(balance)
-    );
-    console.log(balance, "Deposti_USD", Deposti_USD);
-    setBalanceUsd(Deposti_USD.toString());
 
-    // console.log(
-    //   "balance= ",
-    //   utils.formatEther(utils.parseUnits(balance.toString(), 8))
-    // );
+    const Deposti_USD = await getUsdValue(signer, currenct, balance.toString());
+    setBalanceUsd(
+      utils.formatEther(utils.parseUnits(Deposti_USD.toString())) / 100000000
+    );
+
+    balance =
+      utils.formatEther(utils.parseUnits(balance.toString())) / 100000000;
     setBalance(balance);
   };
 
   const healthCheck = async (deposit = 0, mint = 0) => {
-    console.log("mint", mint);
     if (mint == "" || deposit == "") {
       return;
     }
     const signer = await getProviderOrSigner(web3ModalRef, true);
 
-    const Deposti_USD = await getUsdValue(signer, currenct, deposit.toString());
-    console.log("USD", Deposti_USD.toString());
+    const Deposti_USD = await getUsdValue(
+      signer,
+      currenct,
+      utils.parseUnits(deposit.toString(), 8).toString()
+    );
+    console.log(
+      collateral,
+      "= = = USD = ==  =",
+      parseFloat(collateral) + parseFloat(Deposti_USD)
+    );
     let health = await calculateHealthFactor(
       signer,
 
-      parseFloat(totalDSC) + parseFloat(mint),
+      (
+        parseFloat(utils.parseUnits(totalDSC.toString(), 8).toString()) +
+        parseFloat(utils.parseUnits(mint.toString(), 8).toString())
+      ).toString(),
       parseFloat(collateral) + parseFloat(Deposti_USD)
     );
+    console.log("health", health.toString());
     const MIN_HEALTH_FACTOR = await getMinHealthFactor(signer);
-    console.log(
-      "param",
-      utils
-        .parseUnits(totalDSC.toString(), "ether")
-        .add(utils.parseUnits(mint.toString(), "ether"))
-        .toString(),
-      utils
-        .parseUnits(collateral.toString(), "ether")
-        .add(utils.parseUnits(deposit.toString(), "ether"))
-        .toString()
-    );
-    console.log("health = ", health.toString(), MIN_HEALTH_FACTOR.toString());
+
+    // console.log("health = ", health.toString(), MIN_HEALTH_FACTOR.toString());
     if (health.lt(MIN_HEALTH_FACTOR)) {
       console.log("unhealthy");
       SetIsHealth(true);
@@ -169,6 +164,7 @@ export default function Deposit({
             console.log("Select", e);
             setCurrency(e.value);
             balanceLoad(e.value);
+            document.getElementById("postCodeForm").reset();
           }}
         />
         <input
@@ -176,7 +172,7 @@ export default function Deposit({
           className="  customBorder w-1/12 pt-2 mt-2 	 text-colour rounded text-md  "
           defaultValue=""
           onChange={(e) => {
-            console.log("check", e.currentTarget.checked);
+            // console.log("check", e.currentTarget.checked);
             SetIsHealth(e.currentTarget.checked);
             setIsMint(e.currentTarget.checked);
             //   props.setStartDate(e.currentTarget.value);
@@ -197,10 +193,12 @@ export default function Deposit({
           className="  customBorder w-6/12 p-2 mt-2 float-left text-colour rounded text-md  "
           defaultValue=""
           min={0}
+          // value={deposit}
           max={balance}
           onChange={(e) => {
             // props.setStartDate(e.currentTarget.value);
             if (e.currentTarget.value == "") {
+              setDeposit(0);
               return;
             }
             if (parseFloat(e.currentTarget.value) <= parseFloat(balance)) {
@@ -234,9 +232,10 @@ export default function Deposit({
               className="  customBorder w-6/12 p-2 mt-2 float-left	 text-colour rounded text-md  "
               defaultValue=""
               min={0}
-              disabled={deposit == 0}
+              // value={mint}
+              disabled={deposit == 0 || deposit == ""}
               onChange={(e) => {
-                console.log("e.currentTarget.value", e.currentTarget.value);
+                // console.log("e.currentTarget.value", e.currentTarget.value);
                 healthCheck(deposit, e.currentTarget.value);
                 setMint(e.currentTarget.value);
               }}

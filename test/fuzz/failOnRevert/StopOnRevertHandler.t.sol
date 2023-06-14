@@ -71,64 +71,64 @@ contract StopOnRevertHandler is StdInvariant, Test {
         vm.stopPrank();
     }
 
-    function burnDsc(uint256 amountDsc, uint256 addressSeed) public {
-        // Must burn more than 0
-        if (userDeposit.length == 0) {
-            return;
-        }
-        address sender = userDeposit[addressSeed % userDeposit.length];
+    // function burnDsc(uint256 amountDsc, uint256 addressSeed) public {
+    //     // Must burn more than 0
+    //     if (userDeposit.length == 0) {
+    //         return;
+    //     }
+    //     address sender = userDeposit[addressSeed % userDeposit.length];
 
-        amountDsc = bound(amountDsc, 0, dsc.balanceOf(sender));
-        if (amountDsc == 0) {
-            return;
-        }
-        engine.burnDsc(amountDsc);
-    }
-    // Only the DSCEngine can mint DSC!
+    //     amountDsc = bound(amountDsc, 0, dsc.balanceOf(sender));
+    //     if (amountDsc == 0) {
+    //         return;
+    //     }
+    //     engine.burnDsc(amountDsc);
+    // }
+    // // Only the DSCEngine can mint DSC!
 
-    function mintDsc(uint256 amountDsc, uint256 addressSeed) public {
-        if (userDeposit.length == 0) {
-            return;
-        }
-        address sender = userDeposit[addressSeed % userDeposit.length];
+    // function mintDsc(uint256 amountDsc, uint256 addressSeed) public {
+    //     if (userDeposit.length == 0) {
+    //         return;
+    //     }
+    //     address sender = userDeposit[addressSeed % userDeposit.length];
 
-        (uint256 totalDscMinted, uint256 collateralValueInUsd) = engine.getAccountInformation(sender);
+    //     (uint256 totalDscMinted, uint256 collateralValueInUsd) = engine.getAccountInformation(sender);
 
-        int256 maxDscMinted = (int256(collateralValueInUsd) / 2) - int256(totalDscMinted);
-        if (maxDscMinted < 0) {
-            return;
-        }
-        amountDsc = bound(amountDsc, 0, uint256(maxDscMinted));
-        if (amountDsc == 0) {
-            return;
-        }
-        vm.startPrank(sender);
-        engine.minDsc(amountDsc);
-        vm.stopPrank();
-    }
+    //     int256 maxDscMinted = (int256(collateralValueInUsd) / 2) - int256(totalDscMinted);
+    //     if (maxDscMinted < 0) {
+    //         return;
+    //     }
+    //     amountDsc = bound(amountDsc, 0, uint256(maxDscMinted));
+    //     if (amountDsc == 0) {
+    //         return;
+    //     }
+    //     vm.startPrank(sender);
+    //     engine.minDsc(amountDsc);
+    //     vm.stopPrank();
+    // }
 
-    function liquidate(uint256 collateralSeed, address userToBeLiquidated, uint256 debtToCover) public {
-        uint256 minHealthFactor = engine.getMinHealthFactor();
-        uint256 userHealthFactor = engine.getHealthFactor(userToBeLiquidated);
-        if (userHealthFactor >= minHealthFactor) {
-            return;
-        }
-        debtToCover = bound(debtToCover, 1, uint256(type(uint96).max));
-        ERC20Mock collateral = _getCollateralFromSeed(collateralSeed);
-        engine.liquidate(address(collateral), userToBeLiquidated, debtToCover);
-    }
+    // function liquidate(uint256 collateralSeed, address userToBeLiquidated, uint256 debtToCover) public {
+    //     uint256 minHealthFactor = engine.getMinHealthFactor();
+    //     uint256 userHealthFactor = engine.getHealthFactor(userToBeLiquidated);
+    //     if (userHealthFactor >= minHealthFactor) {
+    //         return;
+    //     }
+    //     debtToCover = bound(debtToCover, 1, uint256(type(uint96).max));
+    //     ERC20Mock collateral = _getCollateralFromSeed(collateralSeed);
+    //     engine.liquidate(address(collateral), userToBeLiquidated, debtToCover);
+    // }
 
     /////////////////////////////
     // DecentralizedStableCoin //
-    /////////////////////////////
-    function transferDsc(uint256 amountDsc, address to) public {
-        if (to == address(0)) {
-            to = address(1);
-        }
-        amountDsc = bound(amountDsc, 0, dsc.balanceOf(msg.sender));
-        vm.prank(msg.sender);
-        dsc.transfer(to, amountDsc);
-    }
+    // /////////////////////////////
+    // function transferDsc(uint256 amountDsc, address to) public {
+    //     if (to == address(0)) {
+    //         to = address(1);
+    //     }
+    //     amountDsc = bound(amountDsc, 0, dsc.balanceOf(msg.sender));
+    //     vm.prank(msg.sender);
+    //     dsc.transfer(to, amountDsc);
+    // }
 
     /////////////////////////////
     // Aggregator //

@@ -1599,8 +1599,8 @@
       }
     },
     "test/fuzz/failOnRevert/StopOnRevertHandler.t.sol": {
-      "lastModificationDate": 1686654657397,
-      "contentHash": "3117497ee850312c1d019eb3696aff38",
+      "lastModificationDate": 1686730462468,
+      "contentHash": "5163d9f94c070394112186b65a7cb436",
       "sourceName": "test/fuzz/failOnRevert/StopOnRevertHandler.t.sol",
       "solcConfig": {
         "settings": {

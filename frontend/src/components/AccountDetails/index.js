@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { utils } from "ethers";
 
 export default function Account({
   collateral,
@@ -8,6 +9,7 @@ export default function Account({
   totalDSC,
   health,
 } = props) {
+  console.log("totalDSC", collateral);
   const router = useRouter();
   const [selected, setSelected] = useState("Deposit");
 
@@ -31,10 +33,12 @@ export default function Account({
               scope="row"
               className="px-6 w-6/12	 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
             >
-              Total Collateral $ : {collateral}
+              Total Collateral $ :{" "}
+              {collateral ? (collateral / 100000000).toString() : 0} $
             </th>
             <td className="px-6 w-6/12	 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-              Total DSC Minted : {totalDSC}
+              Total DSC Minted :{" "}
+              {totalDSC ? (totalDSC.toString() / 100000000).toString() : 0}
             </td>
           </tr>
           <tr className="bg-white w-full dark:bg-gray-800">

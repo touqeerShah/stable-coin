@@ -12,6 +12,7 @@ import {
   getAccountInformation,
   getCollateralBalanceOfUser,
   calculateHealthFactor,
+  getUsdValue,
 } from "./../utils/getDetails";
 export default function Home() {
   const router = useRouter();
@@ -28,9 +29,12 @@ export default function Home() {
     let fatch = async () => {
       const signer = await getProviderOrSigner(web3ModalRef, true);
       let accountDetails = await getAccountInformation(signer);
-      console.log("accountDetails = ", accountDetails);
-      setCollateral(utils.formatEther(accountDetails["collateralValueInUsd"]));
-      setTotalDSC(utils.formatEther(accountDetails["totalDscMinted"]));
+      console.log(
+        "accountDetails = ",
+        accountDetails["collateralValueInUsd"].toString()
+      );
+      setCollateral(accountDetails["collateralValueInUsd"].toString());
+      setTotalDSC(accountDetails["totalDscMinted"].toString());
       let collateralETH = await getCollateralBalanceOfUser(
         signer,
         ADDRESS.WETH
@@ -39,8 +43,27 @@ export default function Home() {
         signer,
         ADDRESS.WBTC
       );
-      setCollateralETH(utils.formatEther(collateralETH));
-      setCollateralBTC(utils.formatEther(collateralBTC));
+      let _btcUSD = await getUsdValue(
+        signer,
+        ADDRESS.WBTC,
+        collateralBTC.toString()
+      );
+      let _ethUSD = await getUsdValue(
+        signer,
+        ADDRESS.WBTC,
+        collateralETH.toString()
+      );
+      console.log("collateralBTC", _btcUSD.toString());
+      console.log("collateralETH", collateralETH.toString());
+
+      setCollateralETH(
+        utils.formatEther(utils.parseUnits(_ethUSD.toString(), 7).toString()) +
+          " $"
+      );
+      setCollateralBTC(
+        utils.formatEther(utils.parseUnits(_btcUSD.toString(), 7).toString()) +
+          " $"
+      );
 
       let health = await calculateHealthFactor(
         signer,
