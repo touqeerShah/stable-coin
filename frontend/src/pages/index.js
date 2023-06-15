@@ -31,12 +31,16 @@ export default function Home() {
     let fatch = async () => {
       const signer = await getProviderOrSigner(web3ModalRef, true);
       let accountDetails = await getAccountInformation(signer);
-      console.log(
-        "accountDetails = ",
-        accountDetails["collateralValueInUsd"].toString()
+      // console.log(
+      //   "accountDetails = ",
+      //   accountDetails["collateralValueInUsd"].toString()
+      // );
+      setCollateral(
+        accountDetails ? accountDetails["collateralValueInUsd"].toString() : 0
       );
-      setCollateral(accountDetails["collateralValueInUsd"].toString());
-      setTotalDSC(accountDetails["totalDscMinted"].toString());
+      setTotalDSC(
+        accountDetails ? accountDetails["totalDscMinted"].toString() : 0
+      );
       let collateralETH = await getCollateralBalanceOfUser(
         signer,
         ADDRESS.WETH
@@ -45,35 +49,42 @@ export default function Home() {
         signer,
         ADDRESS.WBTC
       );
-      let _btcUSD = await getUsdValue(
-        signer,
-        ADDRESS.WBTC,
-        collateralBTC.toString()
-      );
-      let _ethUSD = await getUsdValue(
-        signer,
-        ADDRESS.WETH,
-        collateralETH.toString()
-      );
-      console.log("collateralBTC", _btcUSD.toString());
-      console.log("collateralETH", collateralETH.toString());
+      let _btcUSD = 0,
+        _ethUSD = 0;
+      if (collateralBTC) {
+        _btcUSD = await getUsdValue(
+          signer,
+          ADDRESS.WBTC,
+          collateralBTC.toString()
+        );
+        setCollateralBTC(collateralBTC.toString());
+      }
+      if (collateralETH) {
+        _ethUSD = await getUsdValue(
+          signer,
+          ADDRESS.WETH,
+          collateralETH.toString()
+        );
+        setCollateralETH(collateralETH.toString());
+      }
+      // console.log("collateralBTC", _btcUSD.toString());
+      // console.log("collateralETH", collateralETH.toString());
       let constant = 100000000;
-      setCollateralETH(collateralETH.toString());
       setCollateralETHUSD(
         (_ethUSD == 0 ? 0 : _ethUSD / constant).toString() + " $"
       );
-      setCollateralBTC(collateralBTC.toString());
       setCollateralBTCUSD(
         (_btcUSD == 0 ? 0 : _btcUSD / constant).toString() + " $"
       );
-
-      let health = await calculateHealthFactor(
-        signer,
-        accountDetails["totalDscMinted"],
-        accountDetails["collateralValueInUsd"]
-      );
-      console.log("1.health", health.toString());
-      setHealth(utils.formatEther(health));
+      if (accountDetails) {
+        let health = await calculateHealthFactor(
+          signer,
+          accountDetails["totalDscMinted"],
+          accountDetails["collateralValueInUsd"]
+        );
+        console.log("1.health", health.toString());
+        setHealth(utils.formatEther(health));
+      }
     };
 
     // if wallet is not connected, create a new instance of Web3Modal and connect the MetaMask wallet

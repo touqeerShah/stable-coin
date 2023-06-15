@@ -173,8 +173,9 @@ export const healthCheck = async (
 export const balanceLoad = async (currenct, web3ModalRef) => {
   const signer = await getProviderOrSigner(web3ModalRef, true);
   let balance = await getTokenBalance(signer, currenct);
-
+  console.log(currenct, "balancebalancebalancebalance", balance.toString());
   let balanceUSD = await getUsdValue(signer, currenct, balance.toString());
+  console.log("balanceUSD", balanceUSD);
   balanceUSD =
     utils.formatEther(utils.parseUnits(balanceUSD.toString())) / 100000000;
   balance = utils.formatEther(utils.parseUnits(balance.toString())) / 100000000;
