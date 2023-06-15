@@ -141,7 +141,14 @@ export default function Action({
           totalDSC={totalDSC}
         />
       )}
-      {selected == "Burn" && <Burn />}
+      {selected == "Burn" && (
+        <Burn
+          walletConnected={walletConnected}
+          web3ModalRef={web3ModalRef}
+          totalCollateral={totalCollateral}
+          totalDSC={totalDSC}
+        />
+      )}
     </div>
   );
 }

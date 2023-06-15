@@ -115,6 +115,12 @@ export const healthCheck = async (
   const signer = await getProviderOrSigner(web3ModalRef, true);
   let collateralUSD = 0;
   let health = 0;
+  if (totalCollateral == 0) {
+    return {
+      isHealthy: true,
+      message: "Add Collateral First !",
+    };
+  }
   if (currenct != "") {
     if (collateral == "") {
       return;
@@ -152,7 +158,7 @@ export const healthCheck = async (
   const MIN_HEALTH_FACTOR = await getMinHealthFactor(signer);
 
   // console.log("health = ", health.toString(), MIN_HEALTH_FACTOR.toString());
-  if (health.lt(MIN_HEALTH_FACTOR)) {
+  if (health && health.lt(MIN_HEALTH_FACTOR)) {
     console.log("unhealthy");
     // SetIsHealth(true);
     // setMessage("Did not allow to mint more the 50% of collateral ");
@@ -172,14 +178,19 @@ export const healthCheck = async (
 
 export const balanceLoad = async (currenct, web3ModalRef) => {
   const signer = await getProviderOrSigner(web3ModalRef, true);
-  let balance = await getTokenBalance(signer, currenct);
-  console.log(currenct, "balancebalancebalancebalance", balance.toString());
-  let balanceUSD = await getUsdValue(signer, currenct, balance.toString());
-  console.log("balanceUSD", balanceUSD);
-  balanceUSD =
-    utils.formatEther(utils.parseUnits(balanceUSD.toString())) / 100000000;
-  balance = utils.formatEther(utils.parseUnits(balance.toString())) / 100000000;
+  let balance = 0,
+    balanceUSD = 0;
 
+  balance = await getTokenBalance(signer, currenct);
+  if (balance) {
+    console.log(currenct, "balancebalancebalancebalance", balance.toString());
+    balanceUSD = await getUsdValue(signer, currenct, balance.toString());
+    console.log("balanceUSD", balanceUSD);
+    balanceUSD =
+      utils.formatEther(utils.parseUnits(balanceUSD.toString())) / 100000000;
+    balance =
+      utils.formatEther(utils.parseUnits(balance.toString())) / 100000000;
+  }
   return { balance, balanceUSD };
 };
 

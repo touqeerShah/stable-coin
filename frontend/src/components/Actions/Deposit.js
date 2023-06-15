@@ -33,7 +33,7 @@ export default function Deposit({
     let isLoaded = false;
     let fatch = async () => {
       let response = await balanceLoad(currenct, web3ModalRef);
-      console.log("response = = ===  =", response);
+
       setBalance(response.balance);
       setBalanceUsd(response.balanceUSD);
     };
@@ -100,7 +100,7 @@ export default function Deposit({
             console.log("Select", e);
             setCurrency(e.value);
             let response = await balanceLoad(e.value, web3ModalRef);
-            console.log("response", response);
+
             setBalance(response.balance);
             setBalanceUsd(response.balanceUSD);
           }}

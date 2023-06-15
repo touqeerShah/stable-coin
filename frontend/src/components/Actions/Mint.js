@@ -18,7 +18,6 @@ export default function Mint({
   totalDSC,
 }) {
   const router = useRouter();
-  const [deposit, setDeposit] = useState(0);
   const [mint, setMint] = useState(0);
   const [message, setMessage] = useState("");
   const [isHealth, setIsHealth] = useState(false);
@@ -29,6 +28,13 @@ export default function Mint({
   const formOptions = { resolver: yupResolver(validationSchema) };
   const { register, handleSubmit, formState } = useForm(formOptions);
 
+  useEffect(() => {
+    let isLoaded = false;
+
+    if (walletConnected && totalCollateral == 0 && !isLoaded) {
+      setMessage("Add Collateral First !");
+    }
+  }, [walletConnected]);
   let signDocument = useCallback(async (event) => {
     try {
       if (!walletConnected) {
@@ -59,6 +65,7 @@ export default function Mint({
           className="  customBorder w-6/12 p-2 mt-2 float-left text-colour rounded text-md  "
           defaultValue=""
           min={0}
+          disabled={totalCollateral == 0}
           onChange={async (e) => {
             console.log("e.currentTarget.value", e.currentTarget.value);
             //   props.setStartDate(e.currentTarget.value);
@@ -94,7 +101,7 @@ export default function Mint({
           <button
             className="  relative  center  customBorder action-button w-6/12 p-2 mt-2 float-left	 text-colour rounded text-md  "
             type="submit"
-            disabled={isHealth}
+            disabled={isHealth || totalCollateral == 0}
           >
             {/* {spinnerProcess && (
                 <FontAwesomeIcon icon={faSpinner} className="animate-spin" />

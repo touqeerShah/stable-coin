@@ -85,24 +85,24 @@ forge create --rpc-url $PROVIDER_URL --private-key $PRIVATE_KEY src/core/Decentt
 
 
 DecentralizedStableCoin 0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9
-sepolia DecentralizedStableCoin 0xaE6EB26cC7685C9225A27D1084D99758E4e3fb54
+sepolia DecentralizedStableCoin 0xE8828A94Aea8B718dA0a36b4171723F12080Bb3f
 
 export tokenAddresses=[0xD3b9689aa79Fff82AAdC0798B59090799761E6de,0x682f6Aa39072dD888b4A5ee98e1BAe97732b4e5C]
 export priceFeedAddresses=[0xAB8d249De93951b2c53284d97030B3e715172ff3,0x8aa3Fe2bb955443691dAca5f6A7CCF521CbE6a6a]
 
 
-forge create --rpc-url $PROVIDER_URL  --constructor-args $tokenAddresses $priceFeedAddresses 0xaE6EB26cC7685C9225A27D1084D99758E4e3fb54   --private-key $PRIVATE_KEY src/core/DSCEngine.sol:DSCEngine
+forge create --rpc-url $PROVIDER_URL  --constructor-args $tokenAddresses $priceFeedAddresses 0xE8828A94Aea8B718dA0a36b4171723F12080Bb3f   --private-key $PRIVATE_KEY src/core/DSCEngine.sol:DSCEngine
 
 
 DSCEngine 0x5FC8d32690cc91D4c39d9d3abcBD16989F875707
-sepolia DSCEngine 0x3d877fDEedE95E12128525398f7b68dE5C185815
+sepolia DSCEngine 0xe7738bDa55b4CE38e48FCD70f384B6b4446646d1
 
 change ownership
 
-cast send 0xaE6EB26cC7685C9225A27D1084D99758E4e3fb54  "transferOwnership(address)"  0x3d877fDEedE95E12128525398f7b68dE5C185815 --rpc-url $PROVIDER_UR --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
+cast send 0xE8828A94Aea8B718dA0a36b4171723F12080Bb3f  "transferOwnership(address)"  0xe7738bDa55b4CE38e48FCD70f384B6b4446646d1 --rpc-url $PROVIDER_URL --private-key $PRIVATE_KEY
 
 
-cast send DSC_ADDRESS  "transferOwnership(address)"  DSC_ENGINE --rpc-url https://sepolia.infura.io/v3/d5c41dccf31d4df99af77831b59ea59f --private-key $PRIVATE_KEY
+cast send DSC_ADDRESS  "transferOwnership(address)"  DSC_ENGINE --rpc-url $PROVIDER_URL --private-key $PRIVATE_KEY
 
 forge script script/DeployDSC.s.sol:DeployDSC --broadcast --verify --rpc-url ${GOERLI_RPC_URL}
 
