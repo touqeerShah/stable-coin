@@ -273,7 +273,7 @@ contract DSCEngine is ReentrancyGuard, IDSCEngine {
         if (!success) {
             revert DSCEngine__TransferFailed();
         }
-        // i_dsc.burn(amount);
+        i_dsc.burn(amount);
     }
 
     function _redeemCollateral(address tokenCollateralAddress, uint256 amountCollateral, address from, address to)

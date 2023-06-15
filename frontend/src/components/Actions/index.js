@@ -15,7 +15,7 @@ import Burn from "./Burn";
 export default function Action({
   walletConnected,
   web3ModalRef,
-  collateral,
+  totalCollateral,
   totalDSC,
 }) {
   const router = useRouter();
@@ -121,12 +121,26 @@ export default function Action({
         <Deposit
           walletConnected={walletConnected}
           web3ModalRef={web3ModalRef}
-          collateral={collateral}
+          totalCollateral={totalCollateral}
           totalDSC={totalDSC}
         />
       )}
-      {selected == "Mint" && <Mint />}
-      {selected == "Redeem" && <Redeem />}
+      {selected == "Mint" && (
+        <Mint
+          walletConnected={walletConnected}
+          web3ModalRef={web3ModalRef}
+          totalCollateral={totalCollateral}
+          totalDSC={totalDSC}
+        />
+      )}
+      {selected == "Redeem" && (
+        <Redeem
+          walletConnected={walletConnected}
+          web3ModalRef={web3ModalRef}
+          totalCollateral={totalCollateral}
+          totalDSC={totalDSC}
+        />
+      )}
       {selected == "Burn" && <Burn />}
     </div>
   );

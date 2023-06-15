@@ -6,18 +6,18 @@ import ADDRESS from "./../config/address.json"; // import styles from "../styles
  * Deposit Collateral on  Defi to get some stable coins against it
  *
  */
-export const redeem = async (
+export const redeemCurrencyCollateral = async (
   signer,
   tokenCollateralAddress,
   amountCollateral,
   amountToBurn,
-  setIsBurn
+  isBurn
 ) => {
   try {
     // create a new instance of the token contract
     const dsce = new Contract(ADDRESS.DSCENGIN, DSC_ENGIN, signer);
 
-    if (setIsBurn) {
+    if (isBurn) {
       // After the contract has the approval, add the ether and cd tokens in the liquidity
       tx = await dsce.redeemCollateralFroDec(
         tokenCollateralAddress,

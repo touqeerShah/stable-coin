@@ -16,9 +16,11 @@ import {
 } from "./../utils/getDetails";
 export default function Home() {
   const router = useRouter();
-  const [collateral, setCollateral] = useState(0);
+  const [totalCollateral, setCollateral] = useState(0);
   const [collateralETH, setCollateralETH] = useState(0);
   const [collateralBTC, setCollateralBTC] = useState(0);
+  const [collateralETHUSD, setCollateralETHUSD] = useState(0);
+  const [collateralBTCUSD, setCollateralBTCUSD] = useState(0);
   const [totalDSC, setTotalDSC] = useState(0);
   const [health, setHealth] = useState(0);
   const [walletConnected, setWalletConnected] = useState(false);
@@ -50,19 +52,19 @@ export default function Home() {
       );
       let _ethUSD = await getUsdValue(
         signer,
-        ADDRESS.WBTC,
+        ADDRESS.WETH,
         collateralETH.toString()
       );
       console.log("collateralBTC", _btcUSD.toString());
       console.log("collateralETH", collateralETH.toString());
-
-      setCollateralETH(
-        utils.formatEther(utils.parseUnits(_ethUSD.toString(), 7).toString()) +
-          " $"
+      let constant = 100000000;
+      setCollateralETH(collateralETH.toString());
+      setCollateralETHUSD(
+        (_ethUSD == 0 ? 0 : _ethUSD / constant).toString() + " $"
       );
-      setCollateralBTC(
-        utils.formatEther(utils.parseUnits(_btcUSD.toString(), 7).toString()) +
-          " $"
+      setCollateralBTC(collateralBTC.toString());
+      setCollateralBTCUSD(
+        (_btcUSD == 0 ? 0 : _btcUSD / constant).toString() + " $"
       );
 
       let health = await calculateHealthFactor(
@@ -70,12 +72,13 @@ export default function Home() {
         accountDetails["totalDscMinted"],
         accountDetails["collateralValueInUsd"]
       );
+      console.log("1.health", health.toString());
       setHealth(utils.formatEther(health));
     };
 
     // if wallet is not connected, create a new instance of Web3Modal and connect the MetaMask wallet
     console.log("walletConnected  = = 1", walletConnected);
-    if (walletConnected && collateral == 0 && !isLoaded) {
+    if (walletConnected && totalCollateral == 0 && !isLoaded) {
       isLoaded = true;
       fatch();
     }
@@ -124,18 +127,20 @@ export default function Home() {
             <Action
               walletConnected={walletConnected}
               web3ModalRef={web3ModalRef}
-              collateral={collateral}
+              totalCollateral={totalCollateral}
               totalDSC={totalDSC}
             />
           </div>
           <div className="w-full detail">
             {" "}
             <Account
-              collateral={collateral}
+              totalCollateral={totalCollateral}
               collateralETH={collateralETH}
               collateralBTC={collateralBTC}
               totalDSC={totalDSC}
               health={health}
+              collateralETHUSD={collateralETHUSD}
+              collateralBTCUSD={collateralBTCUSD}
             />
           </div>
         </div>

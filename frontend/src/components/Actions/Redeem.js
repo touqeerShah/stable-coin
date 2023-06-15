@@ -1,25 +1,33 @@
 import Select, { components } from "react-select";
 import React, { useEffect, useCallback, useState } from "react";
 import { useRouter } from "next/router";
-import {
-  faMoneyBillTrendUp,
-  faBurn,
-  faMoneyBillTransfer,
-  faCoins,
-} from "@fortawesome/free-solid-svg-icons";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import ADDRESS from "../../config/address.json";
 
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-
-export default function Redeem() {
+import { healthCheck, checkCollateral } from "../../utils/getDetails";
+import { redeemCurrencyCollateral } from "../../utils/redeem";
+export default function Redeem({
+  walletConnected,
+  web3ModalRef,
+  totalCollateral,
+  totalDSC,
+}) {
   const router = useRouter();
-  const [currenct, setCurrency] = useState("");
+  const [currenct, setCurrency] = useState(ADDRESS.WETH);
   const [isBurn, setIsBurn] = useState(false);
   const [redeem, setRedeem] = useState(0);
   const [burn, setBurn] = useState(0);
+  const [redeemCollateral, setRedeemCollateral] = useState(0);
+  const [redeemCollateralUSD, setRedeemCollateralUSD] = useState(0);
+  const constant = 100000000;
+
+  const [isHealth, setIsHealth] = useState(false);
+  const [message, setMessage] = useState("");
 
   const validationSchema = Yup.object().shape({
     // image: Yup.string().required("NFG image is required"),
@@ -27,8 +35,8 @@ export default function Redeem() {
   const formOptions = { resolver: yupResolver(validationSchema) };
   const { register, handleSubmit, formState } = useForm(formOptions);
   const options = [
-    { value: "WETH", label: "WETH", icon: "weth.png" },
-    { value: "WBTC", label: "WBTC", icon: "wbtc.png" },
+    { value: ADDRESS.WETH, label: "WETH", icon: "weth.png" },
+    { value: ADDRESS.WBTC, label: "WBTC", icon: "wbtc.png" },
   ];
 
   const { Option } = components;
@@ -48,9 +56,48 @@ export default function Redeem() {
       </div>
     </Option>
   );
-  let signDocument = useCallback((event) => {}, []);
+
+  const updateCollateral = async (currenct) => {
+    console.log("currenct  = = = =", currenct);
+    let response = await checkCollateral(currenct, web3ModalRef);
+    setRedeemCollateral(response.collateral);
+    setRedeemCollateralUSD(response.collateralUSD);
+    if (response.collateral == 0) {
+      setIsHealth(true);
+      setMessage("No Collateral For Redeem");
+    }
+  };
+  useEffect(() => {
+    let isLoaded = false;
+    let fatch = async () => {
+      updateCollateral(currenct);
+    };
+    // if wallet is not connected, create a new instance of Web3Modal and connect the MetaMask wallet
+    // console.log("walletConnected  = = 1", walletConnected);
+    if (walletConnected && redeemCollateral == 0 && !isLoaded) {
+      isLoaded = true;
+      fatch();
+    }
+  }, [walletConnected]);
+  let submit = useCallback(async (event) => {
+    try {
+      if (!walletConnected) {
+        toast.error("Wallet Not Connected ");
+      }
+      const signer = await getProviderOrSigner(web3ModalRef, true);
+      setMessage("Depositing ... ");
+      setIsHealth(true);
+      await redeemCurrencyCollateral(signer, currenct, redeem, burn, isBurn);
+      toast.success("Transaction Successfully");
+      setMessage("");
+      setIsHealth(false);
+    } catch (error) {
+      toast.error("Transaction have Issue");
+      setIsHealth(false);
+    }
+  }, []);
   return (
-    <form onSubmit={handleSubmit(signDocument)}>
+    <form onSubmit={handleSubmit(submit)}>
       <div className="pt-6    ">
         <Select
           className="  customBorder w-6/12 currency-dropdown	 text-colour rounded text-md  "
@@ -58,9 +105,10 @@ export default function Redeem() {
           options={options}
           components={{ Option: IconOption }}
           isSearchable={false}
-          onChange={(e) => {
+          onChange={async (e) => {
             console.log("Select", e);
             setCurrency(e.value);
+            updateCollateral(e.value);
           }}
         />
         <input
@@ -88,6 +136,8 @@ export default function Redeem() {
           className="  customBorder w-6/12 p-2 mt-2 float-left text-colour rounded text-md  "
           defaultValue=""
           min={0}
+          max={redeemCollateral}
+          disabled={redeemCollateral == 0}
           onChange={(e) => {
             console.log("e.currentTarget.value", e.currentTarget.value);
             //   props.setStartDate(e.currentTarget.value);
@@ -99,7 +149,7 @@ export default function Redeem() {
           className=" w-full  mt-2  float-left text-colour"
         >
           {" "}
-          Collateral (){" "}
+          Collateral ({redeemCollateral} / {redeemCollateralUSD} $){" "}
         </label>
         {isBurn && (
           <>
@@ -115,17 +165,51 @@ export default function Redeem() {
               type="number"
               className="  customBorder w-6/12 p-2 mt-2 float-left	 text-colour rounded text-md  "
               defaultValue=""
-              disabled={redeem == 0}
-              onChange={(e) => {
-                //   props.setStartDate(e.currentTarget.value);
+              max={totalDSC / constant}
+              min={0}
+              disabled={redeem == 0 || totalDSC == 0}
+              onChange={async (e) => {
+                if (
+                  parseFloat(e.currentTarget.value) >
+                  parseFloat(totalDSC / constant)
+                ) {
+                  e.currentTarget.value = totalDSC / constant;
+                }
+                setBurn(e.currentTarget.value);
+                let response = await healthCheck(
+                  web3ModalRef,
+                  currenct,
+                  totalDSC,
+                  totalCollateral,
+                  redeem,
+                  e.currentTarget.value,
+                  true
+                );
+                console.log("response  ", response);
+                setIsHealth(response.isHealthy);
+                setMessage(response.message);
               }}
             />
           </>
+        )}
+        {message && (
+          <div className="w-full pt-2 float-left   ">
+            <span className="text-colour">
+              {message} {}
+              {message.indexOf("Depositing") != -1 && (
+                <FontAwesomeIcon
+                  icon={faSpinner}
+                  className={"text-sm text-colour pr-2 fa-spin"}
+                />
+              )}
+            </span>
+          </div>
         )}
         <div className="w-full float-left   ">
           <button
             className="  relative  center  customBorder action-button w-6/12 p-2 mt-2 float-left	 text-colour rounded text-md  "
             type="submit"
+            disabled={isHealth}
           >
             {/* {spinnerProcess && (
                 <FontAwesomeIcon icon={faSpinner} className="animate-spin" />

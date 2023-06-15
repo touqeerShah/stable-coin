@@ -1,19 +1,12 @@
 import Select, { components } from "react-select";
 import React, { useEffect, useCallback, useState, useRef } from "react";
 import { useRouter } from "next/router";
-import { utils } from "ethers";
 import { toast } from "react-toastify";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getProviderOrSigner } from "../../utils/getProviderOrSigner";
 import { depositCollateral } from "../../utils/depost";
-import {
-  getTokenBalance,
-  calculateHealthFactor,
-  getMinHealthFactor,
-  getUsdValue,
-} from "../../utils/getDetails";
+import { healthCheck, balanceLoad } from "../../utils/getDetails";
 import ADDRESS from "../../config/address.json"; // import styles from "../styles/Home.module.css";
 
 import { useForm } from "react-hook-form";
@@ -23,7 +16,7 @@ import * as Yup from "yup";
 export default function Deposit({
   walletConnected,
   web3ModalRef,
-  collateral,
+  totalCollateral,
   totalDSC,
 }) {
   const router = useRouter();
@@ -33,73 +26,16 @@ export default function Deposit({
   const [mint, setMint] = useState(0);
   const [balance, setBalance] = useState(0);
   const [balanceUsd, setBalanceUsd] = useState(0);
-  const [isHealth, SetIsHealth] = useState(false);
+  const [isHealth, setIsHealth] = useState(false);
   const [message, setMessage] = useState("");
 
-  // balance load
-  const balanceLoad = async (currenct) => {
-    const signer = await getProviderOrSigner(web3ModalRef, true);
-    let balance = await getTokenBalance(signer, currenct);
-
-    const Deposti_USD = await getUsdValue(signer, currenct, balance.toString());
-    setBalanceUsd(
-      utils.formatEther(utils.parseUnits(Deposti_USD.toString())) / 100000000
-    );
-
-    balance =
-      utils.formatEther(utils.parseUnits(balance.toString())) / 100000000;
-    setBalance(balance);
-  };
-
-  const healthCheck = async (deposit = 0, mint = 0) => {
-    if (mint == "" || deposit == "") {
-      return;
-    }
-    const signer = await getProviderOrSigner(web3ModalRef, true);
-
-    const Deposti_USD = await getUsdValue(
-      signer,
-      currenct,
-      utils.parseUnits(deposit.toString(), 8).toString()
-    );
-    console.log(
-      collateral,
-      "= = = USD = ==  =",
-      parseFloat(collateral) + parseFloat(Deposti_USD)
-    );
-    let health = await calculateHealthFactor(
-      signer,
-
-      (
-        parseFloat(utils.parseUnits(totalDSC.toString(), 8).toString()) +
-        parseFloat(utils.parseUnits(mint.toString(), 8).toString())
-      ).toString(),
-      parseFloat(collateral) + parseFloat(Deposti_USD)
-    );
-    console.log("health", health.toString());
-    const MIN_HEALTH_FACTOR = await getMinHealthFactor(signer);
-
-    // console.log("health = ", health.toString(), MIN_HEALTH_FACTOR.toString());
-    if (health.lt(MIN_HEALTH_FACTOR)) {
-      console.log("unhealthy");
-      SetIsHealth(true);
-      setMessage("Did not allow to mint more the 50% of collateral ");
-    } else {
-      console.log("healthy");
-      setMessage("");
-      SetIsHealth(false);
-    }
-
-    // if()
-  };
-
-  // useEffects are used to react to changes in state of the website
-  // The array at the end of function call represents what state changes will trigger this effect
-  // In this case, whenever the value of `walletConnected` changes - this effect will be called
   useEffect(() => {
     let isLoaded = false;
     let fatch = async () => {
-      balanceLoad(currenct);
+      let response = await balanceLoad(currenct, web3ModalRef);
+      console.log("response = = ===  =", response);
+      setBalance(response.balance);
+      setBalanceUsd(response.balanceUSD);
     };
     // if wallet is not connected, create a new instance of Web3Modal and connect the MetaMask wallet
     // console.log("walletConnected  = = 1", walletConnected);
@@ -141,14 +77,14 @@ export default function Deposit({
     try {
       const signer = await getProviderOrSigner(web3ModalRef, true);
       setMessage("Depositing ... ");
-      SetIsHealth(true);
+      setIsHealth(true);
       await depositCollateral(signer, currenct, deposit, mint, isMint);
       toast.success("Transaction Successfully");
       setMessage("");
-      SetIsHealth(false);
+      setIsHealth(false);
     } catch (error) {
       toast.error("Transaction have Issue");
-      SetIsHealth(false);
+      setIsHealth(false);
     }
   }, [deposit, mint]);
   return (
@@ -163,8 +99,10 @@ export default function Deposit({
           onChange={async (e) => {
             console.log("Select", e);
             setCurrency(e.value);
-            balanceLoad(e.value);
-            document.getElementById("postCodeForm").reset();
+            let response = await balanceLoad(e.value, web3ModalRef);
+            console.log("response", response);
+            setBalance(response.balance);
+            setBalanceUsd(response.balanceUSD);
           }}
         />
         <input
@@ -173,7 +111,7 @@ export default function Deposit({
           defaultValue=""
           onChange={(e) => {
             // console.log("check", e.currentTarget.checked);
-            SetIsHealth(e.currentTarget.checked);
+            setIsHealth(e.currentTarget.checked);
             setIsMint(e.currentTarget.checked);
             //   props.setStartDate(e.currentTarget.value);
           }}
@@ -234,10 +172,23 @@ export default function Deposit({
               min={0}
               // value={mint}
               disabled={deposit == 0 || deposit == ""}
-              onChange={(e) => {
+              onChange={async (e) => {
                 // console.log("e.currentTarget.value", e.currentTarget.value);
-                healthCheck(deposit, e.currentTarget.value);
                 setMint(e.currentTarget.value);
+
+                let response;
+
+                response = await healthCheck(
+                  web3ModalRef,
+                  currenct,
+                  totalDSC,
+                  totalCollateral,
+                  deposit,
+                  e.currentTarget.value,
+                  false
+                );
+                setIsHealth(response.isHealthy);
+                setMessage(response.message);
               }}
             />
           </>
