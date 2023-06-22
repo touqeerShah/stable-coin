@@ -9,7 +9,7 @@ import {DeployDSC} from "../../script/DeployDSC.s.sol";
 import {DecentralizedStableCoin} from "../../src/core/DecenttializedStableCoin.sol";
 import {DSCEngine} from "../../src/core/DSCEngine.sol";
 import {ERC20Mock} from "../../src/mock/ERC20Mock.sol";
-import {IDSCEngine} from "../../src/interface/IDSCEngine.sol";
+import {IDSCEngine} from "../../src/interfaces/IDSCEngine.sol";
 
 /**
  * Here we wirte our unit test for all the fucntion which we have created so far

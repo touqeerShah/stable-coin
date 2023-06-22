@@ -85,21 +85,30 @@ forge create --rpc-url $PROVIDER_URL --private-key $PRIVATE_KEY src/core/Decentt
 
 
 DecentralizedStableCoin 0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9
-sepolia DecentralizedStableCoin 0xE8828A94Aea8B718dA0a36b4171723F12080Bb3f
+sepolia DecentralizedStableCoin 0xc987EFDd8f17a23EC899bBa38E57D47BF8249FaD
 
-export tokenAddresses=[0xD3b9689aa79Fff82AAdC0798B59090799761E6de,0x682f6Aa39072dD888b4A5ee98e1BAe97732b4e5C]
-export priceFeedAddresses=[0xAB8d249De93951b2c53284d97030B3e715172ff3,0x8aa3Fe2bb955443691dAca5f6A7CCF521CbE6a6a]
+export tokenAddresses="[0xD3b9689aa79Fff82AAdC0798B59090799761E6de,0x682f6Aa39072dD888b4A5ee98e1BAe97732b4e5C]"
+export priceFeedAddresses="[0xAB8d249De93951b2c53284d97030B3e715172ff3,0x8aa3Fe2bb955443691dAca5f6A7CCF521CbE6a6a]"
+export dsc="0xc987EFDd8f17a23EC899bBa38E57D47BF8249FaD"
+export ETHERSCAN_API_KEY=<YOUR-SNOWTRACE-API-KEY>
 
-
-forge create --rpc-url $PROVIDER_URL  --constructor-args $tokenAddresses $priceFeedAddresses 0xE8828A94Aea8B718dA0a36b4171723F12080Bb3f   --private-key $PRIVATE_KEY src/core/DSCEngine.sol:DSCEngine
+forge create --rpc-url $PROVIDER_URL  --constructor-args $tokenAddresses $priceFeedAddresses 0xc987EFDd8f17a23EC899bBa38E57D47BF8249FaD      --private-key $PRIVATE_KEY src/core/DSCEngine.sol:DSCEngine
 
 
 DSCEngine 0x5FC8d32690cc91D4c39d9d3abcBD16989F875707
-sepolia DSCEngine 0xe7738bDa55b4CE38e48FCD70f384B6b4446646d1
+sepolia DSCEngine 0xBbEa7857e75aE30bC71708c190aCd4159268d5BF
 
 change ownership
 
-cast send 0xE8828A94Aea8B718dA0a36b4171723F12080Bb3f  "transferOwnership(address)"  0xe7738bDa55b4CE38e48FCD70f384B6b4446646d1 --rpc-url $PROVIDER_URL --private-key $PRIVATE_KEY
+cast send 0xc987EFDd8f17a23EC899bBa38E57D47BF8249FaD  "transferOwnership(address)"  0xa81532b2d134CdB8b26f5eCd712436f28a62Aa80 --rpc-url $PROVIDER_URL --private-key $PRIVATE_KEY
+
+forge verify-contract --chain-id 11155111 --constructor-args $(cast abi-encode "constructor(address[],address[],address)" "[0xD3b9689aa79Fff82AAdC0798B59090799761E6de,0x682f6Aa39072dD888b4A5ee98e1BAe97732b4e5C]" "[0xAB8d249De93951b2c53284d97030B3e715172ff3,0x8aa3Fe2bb955443691dAca5f6A7CCF521CbE6a6a]" "0xc987EFDd8f17a23EC899bBa38E57D47BF8249FaD"  ) --etherscan-api-key  $ETHERSCAN_API_KEY 0xBbEa7857e75aE30bC71708c190aCd4159268d5BF src/core/DSCEngine.sol:DSCEngine
+
+
+
+forge verify-contract  0xBbEa7857e75aE30bC71708c190aCd4159268d5BF --constructor-args  $tokenAddresses $priceFeedAddresses 0xE8828A94Aea8B718dA0a36b4171723F12080Bb3f src/core/DSCEngine.sol:DSCEngine --etherscan-api-key  E68FRNFXV8W9IC7ZVYUQ4WNZRH7MRXURV8 --chain-id 11155111 --verifier-url https://sepolia.infura.io/v3/d5c41dccf31d4df99af77831b59ea59f  
+
+
 
 
 cast send DSC_ADDRESS  "transferOwnership(address)"  DSC_ENGINE --rpc-url $PROVIDER_URL --private-key $PRIVATE_KEY

@@ -107,16 +107,16 @@ contract StopOnRevertHandler is StdInvariant, Test {
     //     vm.stopPrank();
     // }
 
-    // function liquidate(uint256 collateralSeed, address userToBeLiquidated, uint256 debtToCover) public {
-    //     uint256 minHealthFactor = engine.getMinHealthFactor();
-    //     uint256 userHealthFactor = engine.getHealthFactor(userToBeLiquidated);
-    //     if (userHealthFactor >= minHealthFactor) {
-    //         return;
-    //     }
-    //     debtToCover = bound(debtToCover, 1, uint256(type(uint96).max));
-    //     ERC20Mock collateral = _getCollateralFromSeed(collateralSeed);
-    //     engine.liquidate(address(collateral), userToBeLiquidated, debtToCover);
-    // }
+    function liquidate(uint256 collateralSeed, address userToBeLiquidated, uint256 debtToCover) public {
+        uint256 minHealthFactor = engine.getMinHealthFactor();
+        uint256 userHealthFactor = engine.getHealthFactor(userToBeLiquidated);
+        if (userHealthFactor >= minHealthFactor) {
+            return;
+        }
+        debtToCover = bound(debtToCover, 1, uint256(type(uint96).max));
+        ERC20Mock collateral = _getCollateralFromSeed(collateralSeed);
+        engine.liquidate(address(collateral), userToBeLiquidated, debtToCover);
+    }
 
     /////////////////////////////
     // DecentralizedStableCoin //

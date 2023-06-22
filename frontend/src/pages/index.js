@@ -8,12 +8,7 @@ import React, { useEffect, useCallback, useState, useRef } from "react";
 import { utils } from "ethers";
 import ADDRESS from "./../config/address.json"; // import styles from "../styles/Home.module.css";
 import { getProviderOrSigner } from "./../utils/getProviderOrSigner";
-import {
-  getAccountInformation,
-  getCollateralBalanceOfUser,
-  calculateHealthFactor,
-  getUsdValue,
-} from "./../utils/getDetails";
+import { init } from "./../utils/getDetails";
 export default function Home() {
   const router = useRouter();
   const [totalCollateral, setCollateral] = useState(0);
@@ -30,61 +25,70 @@ export default function Home() {
     let isLoaded = false;
     let fatch = async () => {
       const signer = await getProviderOrSigner(web3ModalRef, true);
-      let accountDetails = await getAccountInformation(signer);
-      // console.log(
-      //   "accountDetails = ",
-      //   accountDetails["collateralValueInUsd"].toString()
+      const address = await signer.getAddress();
+      let response = await init(signer, address);
+      setCollateral(response.totalCollateral);
+      setTotalDSC(response.totalDSC);
+      setCollateralBTC(response.collateralBTC.toString());
+      setCollateralETH(response.collateralETH.toString());
+      setCollateralETHUSD(response.ethUSD);
+      setCollateralBTCUSD(response.btcUSD);
+      setHealth(response.health);
+      // let accountDetails = await getAccountInformation(signer, address);
+      // // console.log(
+      // //   "accountDetails = ",
+      // //   accountDetails["collateralValueInUsd"].toString()
+      // // );
+      // setCollateral(
+      //   accountDetails ? accountDetails["collateralValueInUsd"].toString() : 0
       // );
-      setCollateral(
-        accountDetails ? accountDetails["collateralValueInUsd"].toString() : 0
-      );
-      setTotalDSC(
-        accountDetails ? accountDetails["totalDscMinted"].toString() : 0
-      );
-      let collateralETH = await getCollateralBalanceOfUser(
-        signer,
-        ADDRESS.WETH
-      );
-      let collateralBTC = await getCollateralBalanceOfUser(
-        signer,
-        ADDRESS.WBTC
-      );
-      let _btcUSD = 0,
-        _ethUSD = 0;
-      if (collateralBTC) {
-        _btcUSD = await getUsdValue(
-          signer,
-          ADDRESS.WBTC,
-          collateralBTC.toString()
-        );
-        setCollateralBTC(collateralBTC.toString());
-      }
-      if (collateralETH) {
-        _ethUSD = await getUsdValue(
-          signer,
-          ADDRESS.WETH,
-          collateralETH.toString()
-        );
-        setCollateralETH(collateralETH.toString());
-      }
-      // console.log("collateralBTC", _btcUSD.toString());
-      // console.log("collateralETH", collateralETH.toString());
-      let constant = 100000000;
-      setCollateralETHUSD(
-        (_ethUSD == 0 ? 0 : _ethUSD / constant).toString() + " $"
-      );
-      setCollateralBTCUSD(
-        (_btcUSD == 0 ? 0 : _btcUSD / constant).toString() + " $"
-      );
-      if (accountDetails) {
-        let health = await calculateHealthFactor(
-          signer,
-          accountDetails["totalDscMinted"],
-          accountDetails["collateralValueInUsd"]
-        );
-        console.log("1.health", health.toString());
-        setHealth(utils.formatEther(health));
-      }
+      // setTotalDSC(
+      //   accountDetails ? accountDetails["totalDscMinted"].toString() : 0
+      // );
+      // let collateralETH = await getCollateralBalanceOfUser(
+      //   signer,
+      //   ADDRESS.WETH
+      // );
+      // let collateralBTC = await getCollateralBalanceOfUser(
+      //   signer,
+      //   ADDRESS.WBTC
+      // );
+      // let _btcUSD = 0,
+      //   _ethUSD = 0;
+      // if (collateralBTC) {
+      //   _btcUSD = await getUsdValue(
+      //     signer,
+      //     ADDRESS.WBTC,
+      //     collateralBTC.toString()
+      //   );
+      //   setCollateralBTC(collateralBTC.toString());
+      // }
+      // if (collateralETH) {
+      //   _ethUSD = await getUsdValue(
+      //     signer,
+      //     ADDRESS.WETH,
+      //     collateralETH.toString()
+      //   );
+      //   setCollateralETH(collateralETH.toString());
+      // }
+      // // console.log("collateralBTC", _btcUSD.toString());
+      // // console.log("collateralETH", collateralETH.toString());
+      // let constant = 100000000;
+      // setCollateralETHUSD(
+      //   (_ethUSD == 0 ? 0 : _ethUSD / constant).toString() + " $"
+      // );
+      // setCollateralBTCUSD(
+      //   (_btcUSD == 0 ? 0 : _btcUSD / constant).toString() + " $"
+      // );
+      // if (accountDetails) {
+      //   let health = await calculateHealthFactor(
+      //     signer,
+      //     accountDetails["totalDscMinted"],
+      //     accountDetails["collateralValueInUsd"]
+      //   );
+      //   console.log("1.health", health.toString());
+      //   setHealth(utils.formatEther(health));
+      // }
     };
 
     // if wallet is not connected, create a new instance of Web3Modal and connect the MetaMask wallet
@@ -156,7 +160,10 @@ export default function Home() {
           </div>
         </div>
         <div className="w-6/12 float-left	 top-0	liquidated-pool">
-          <LiquidationPool />
+          <LiquidationPool
+            walletConnected={walletConnected}
+            web3ModalRef={web3ModalRef}
+          />
         </div>
       </div>
     </div>

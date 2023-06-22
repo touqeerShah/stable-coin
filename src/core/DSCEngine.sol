@@ -29,9 +29,8 @@ pragma solidity 0.8.19;
 import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
-import "./../interface/IDSCEngine.sol";
-import {IDecenttializedStableCoin} from "./../interface/IDecenttializedStableCoin.sol";
-import "forge-std/console.sol";
+import "./../interfaces/IDSCEngine.sol";
+import {IDecenttializedStableCoin} from "./../interfaces/IDecenttializedStableCoin.sol";
 
 /*
  * @title DSCEngine

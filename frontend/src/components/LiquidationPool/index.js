@@ -6,14 +6,64 @@ import {
   faAddressCard,
   faWaveSquare,
 } from "@fortawesome/free-solid-svg-icons";
+import { useApolloClient } from "@apollo/client";
 
 import Row from "./row";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
-export default function LiquidationPool() {
+import { GET_ALL_DEPOSIT_ACCOUNTS } from "../../utils/subgrapQueries";
+import { getTokenBalance, getAccountInformation } from "../../utils/getDetails";
+export default function LiquidationPool({ walletConnected, web3ModalRef }) {
   const router = useRouter();
-  const [selected, setSelected] = useState("Deposit");
+  const [depositAccount, setDepositAccount] = useState([]);
+  const subgraphClient = useApolloClient();
 
+  useEffect(() => {
+    // console.log("documentDetails && showModal", documentDetails, showModal, isSigner);
+
+    const fetchData = async () => {
+      try {
+        try {
+          const depositAccount = await subgraphClient.query({
+            query: GET_ALL_DEPOSIT_ACCOUNTS,
+          });
+          console.log("depositAccount.data", depositAccount.data);
+          const signer = await getProviderOrSigner(web3ModalRef, true);
+
+          for (let index = 0; index < depositAccount.data.length; index++) {
+            const element = depositAccount.data[index];
+            let accountDetails = await getAccountInformation(
+              signer,
+              element.depositor
+            );
+            if (
+              accountDetails &&
+              BigInt(
+                accountDetails["totalDscMinted"].toString().lt(0) &&
+                  BigInt(
+                    accountDetails["collateralValueInUsd"].toString().lt(0)
+                  )
+              )
+            ) {
+              let response = await healthCheck(
+                web3ModalRef,
+                "",
+                accountDetails["totalDscMinted"].toString(),
+                accountDetails["collateralValueInUsd"].toString(),
+                0,
+                0,
+                false
+              );
+            }
+          }
+        } catch (error) {}
+        setUriData(data);
+      } catch (error) {}
+    };
+    console.log("depositAccount.length", depositAccount.length);
+    if (depositAccount.length == 0) {
+      fetchData();
+    }
+  }, []);
   return (
     <div className="p-3">
       <div className="relative customBorder overflow-x-auto shadow-md sm:rounded-lg">

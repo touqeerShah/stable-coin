@@ -8,7 +8,11 @@ let constant = 100000000;
  * Deposit Collateral on  Defi to get some stable coins against it
  *
  */
-export const getTokenBalance = async (signer, tokenCollateralAddress) => {
+export const getTokenBalance = async (
+  signer,
+  tokenCollateralAddress,
+  address
+) => {
   try {
     // create a new instance of the token contract
     const exchangeContract = new Contract(
@@ -18,17 +22,15 @@ export const getTokenBalance = async (signer, tokenCollateralAddress) => {
     );
     // Because CD tokens are an ERC20, user would need to give the contract allowance
     // to take the required number CD tokens out of his contract
-    const address = signer.getAddress();
     return await exchangeContract.balanceOf(address);
   } catch (err) {
     console.error(err);
   }
 };
 
-export const getAccountInformation = async (signer) => {
+export const getAccountInformation = async (signer, address) => {
   try {
     const dsce = new Contract(ADDRESS.DSCENGIN, DSC_ENGIN, signer);
-    const address = await signer.getAddress();
 
     // Because CD tokens are an ERC20, user would need to give the contract allowance
     // to take the required number CD tokens out of his contract
@@ -102,7 +104,7 @@ export const getUsdValue = async (signer, tokenCollateralAddress, amount) => {
 
 export const healthCheck = async (
   web3ModalRef,
-  currenct,
+  currency,
   totalDSC,
   totalCollateral,
   collateral = 0,
@@ -121,18 +123,18 @@ export const healthCheck = async (
       message: "Add Collateral First !",
     };
   }
-  if (currenct != "") {
+  if (currency != "") {
     if (collateral == "") {
       return;
     }
     collateralUSD = await getUsdValue(
       signer,
-      currenct,
+      currency,
       utils.parseUnits(collateral.toString(), 8).toString()
     );
   }
 
-  if (isReedem) {
+  if (!isReedem) {
     health = await calculateHealthFactor(
       signer,
 
@@ -176,15 +178,16 @@ export const healthCheck = async (
   // if()
 };
 
-export const balanceLoad = async (currenct, web3ModalRef) => {
+export const balanceLoad = async (currency, web3ModalRef) => {
   const signer = await getProviderOrSigner(web3ModalRef, true);
   let balance = 0,
     balanceUSD = 0;
+  const address = signer.getAddress();
 
-  balance = await getTokenBalance(signer, currenct);
+  balance = await getTokenBalance(signer, currency, address);
   if (balance) {
-    console.log(currenct, "balancebalancebalancebalance", balance.toString());
-    balanceUSD = await getUsdValue(signer, currenct, balance.toString());
+    console.log(currency, "balancebalancebalancebalance", balance.toString());
+    balanceUSD = await getUsdValue(signer, currency, balance.toString());
     console.log("balanceUSD", balanceUSD);
     balanceUSD =
       utils.formatEther(utils.parseUnits(balanceUSD.toString())) / 100000000;
@@ -194,14 +197,68 @@ export const balanceLoad = async (currenct, web3ModalRef) => {
   return { balance, balanceUSD };
 };
 
-export const checkCollateral = async (currenct, web3ModalRef) => {
+export const checkCollateral = async (currency, web3ModalRef) => {
   const signer = await getProviderOrSigner(web3ModalRef, true);
 
-  let _collateral = await getCollateralBalanceOfUser(signer, currenct);
-  let _btcUSD = await getUsdValue(signer, currenct, _collateral.toString());
+  let _collateral = await getCollateralBalanceOfUser(signer, currency);
+  let btcUSD = await getUsdValue(signer, currency, _collateral.toString());
 
   return {
     collateral: (_collateral == 0 ? 0 : _collateral / constant).toString(),
-    collateralUSD: (_btcUSD == 0 ? 0 : _btcUSD / constant).toString(),
+    collateralUSD: (btcUSD == 0 ? 0 : btcUSD / constant).toString(),
+  };
+};
+
+export const init = async (signer, address) => {
+  let accountDetails = await getAccountInformation(signer, address);
+  // console.log(
+  //   "accountDetails = ",
+  //   accountDetails["collateralValueInUsd"].toString()
+  // );
+
+  let totalCollateral = accountDetails
+    ? accountDetails["collateralValueInUsd"].toString()
+    : 0;
+
+  let totalDSC = accountDetails
+    ? accountDetails["totalDscMinted"].toString()
+    : 0;
+  let collateralETH = await getCollateralBalanceOfUser(signer, ADDRESS.WETH);
+  let collateralBTC = await getCollateralBalanceOfUser(signer, ADDRESS.WBTC);
+  let btcUSD = 0,
+    ethUSD = 0;
+  if (collateralBTC) {
+    btcUSD = await getUsdValue(signer, ADDRESS.WBTC, collateralBTC.toString());
+    collateralBTC = collateralBTC.toString();
+  }
+  if (collateralETH) {
+    ethUSD = await getUsdValue(signer, ADDRESS.WETH, collateralETH.toString());
+  }
+  // console.log("collateralBTC", btcUSD.toString());
+  // console.log("collateralETH", collateralETH.toString());
+  let constant = 100000000;
+
+  ethUSD = (ethUSD == 0 ? 0 : ethUSD / constant).toString() + " $";
+
+  btcUSD = (btcUSD == 0 ? 0 : btcUSD / constant).toString() + " $";
+  let health = 0;
+  if (accountDetails) {
+    let health = await calculateHealthFactor(
+      signer,
+      accountDetails["totalDscMinted"],
+      accountDetails["collateralValueInUsd"]
+    );
+    console.log("1.health", health.toString());
+    // setHealth(utils.formatEther(health));
+  }
+
+  return {
+    totalCollateral: totalCollateral,
+    totalDSC: totalDSC,
+    collateralBTC: collateralBTC.toString(),
+    collateralETH: collateralETH.toString(),
+    ethUSD: ethUSD,
+    btcUSD: btcUSD,
+    health: utils.formatEther(health),
   };
 };
