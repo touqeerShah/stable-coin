@@ -5,13 +5,15 @@ import {
   faArrowUpRightDots,
   faAddressCard,
   faWaveSquare,
+  faSpinner,
 } from "@fortawesome/free-solid-svg-icons";
 import { useApolloClient } from "@apollo/client";
+import ADDRESS from "../../config/address.json"; // import styles from "../styles/Home.module.css";
 
 import Row from "./row";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { GET_ALL_DEPOSIT_ACCOUNTS } from "../../utils/subgrapQueries";
-import { getTokenBalance, getAccountInformation } from "../../utils/getDetails";
+import { init, getAccountInformation } from "../../utils/getDetails";
 export default function LiquidationPool({ walletConnected, web3ModalRef }) {
   const router = useRouter();
   const [depositAccount, setDepositAccount] = useState([]);
@@ -23,36 +25,57 @@ export default function LiquidationPool({ walletConnected, web3ModalRef }) {
     const fetchData = async () => {
       try {
         try {
-          const depositAccount = await subgraphClient.query({
+          const _depositAccount = await subgraphClient.query({
             query: GET_ALL_DEPOSIT_ACCOUNTS,
           });
-          console.log("depositAccount.data", depositAccount.data);
+          console.log("depositAccount.data", _depositAccount.data);
           const signer = await getProviderOrSigner(web3ModalRef, true);
 
-          for (let index = 0; index < depositAccount.data.length; index++) {
-            const element = depositAccount.data[index];
-            let accountDetails = await getAccountInformation(
-              signer,
-              element.depositor
-            );
+          for (let index = 0; index < _depositAccount.data.length; index++) {
+            const element = _depositAccount.data[index];
+            let response = await init(signer, element.depositor);
+
             if (
-              accountDetails &&
-              BigInt(
-                accountDetails["totalDscMinted"].toString().lt(0) &&
-                  BigInt(
-                    accountDetails["collateralValueInUsd"].toString().lt(0)
-                  )
-              )
+              response &&
+              BigInt(response.totalCollateral.toString()).lt(0) &&
+              BigInt(response.totalDSC.toString()).lt(0)
             ) {
-              let response = await healthCheck(
+              let responseHealthCheck = await healthCheck(
                 web3ModalRef,
                 "",
-                accountDetails["totalDscMinted"].toString(),
-                accountDetails["collateralValueInUsd"].toString(),
+                response.collateralETH.toString(),
+                response.totalDSC.toString(),
                 0,
                 0,
                 false
               );
+
+              depositAccount.push({
+                token: ADDRESS.WETH,
+                address: element.depositor,
+                totalUSD: response.ethUSD + response.btcUSD,
+                health: response.health,
+                responseHealthCheck: responseHealthCheck,
+              });
+
+              responseHealthCheck = await healthCheck(
+                web3ModalRef,
+                "",
+                response.collateralETH.toString(),
+                response.totalDSC.toString(),
+                0,
+                0,
+                false
+              );
+
+              depositAccount.push({
+                token: ADDRESS.WBTC,
+                address: element.depositor,
+                totalUSD: response.ethUSD + response.btcUSD,
+                health: response.health,
+                responseHealthCheck: responseHealthCheck,
+              });
+              setDepositAccount(depositAccount);
             }
           }
         } catch (error) {}
@@ -107,42 +130,20 @@ export default function LiquidationPool({ walletConnected, web3ModalRef }) {
             </tr>
           </thead>
           <tbody>
-            <Row
-              address={"0xCBc477A6483E89B0267e1837Ff233B87D5943988"}
-              health={"0.2"}
-              amountPay={"100$"}
-              amountProfit={"150$"}
-            />
-            <Row
-              address={"0xCBc477A6483E89B0267e1837Ff233B87D5943988"}
-              health={"0.2"}
-              amountPay={"100$"}
-              amountProfit={"150$"}
-            />
-            <Row
-              address={"0xCBc477A6483E89B0267e1837Ff233B87D5943988"}
-              health={"0.2"}
-              amountPay={"100$"}
-              amountProfit={"150$"}
-            />
-            <Row
-              address={"0xCBc477A6483E89B0267e1837Ff233B87D5943988"}
-              health={"0.2"}
-              amountPay={"100$"}
-              amountProfit={"150$"}
-            />
-            <Row
-              address={"0xCBc477A6483E89B0267e1837Ff233B87D5943988"}
-              health={"0.2"}
-              amountPay={"100$"}
-              amountProfit={"150$"}
-            />{" "}
-            <Row
-              address={"0xCBc477A6483E89B0267e1837Ff233B87D5943988"}
-              health={"0.2"}
-              amountPay={"100$"}
-              amountProfit={"150$"}
-            />
+            {depositAccount.length != 0 && (
+              <Row
+                address={"0xCBc477A6483E89B0267e1837Ff233B87D5943988"}
+                health={"0.2"}
+                amountPay={"100$"}
+                amountProfit={"150$"}
+              />
+            )}
+            {depositAccount.length == 0 && (
+              <span className="  relative  center   action-button w-full p-2 mt-2 float-left	 text-colour rounded text-md  ">
+                Loading ...{" "}
+                <FontAwesomeIcon icon={faSpinner} className="animate-spin" />
+              </span>
+            )}
           </tbody>
         </table>
       </div>
