@@ -11,7 +11,7 @@ export default function Account({
   collateralETHUSD,
   collateralBTCUSD,
 } = props) {
-  console.log("totalDSC", totalCollateral);
+  // console.log("totalDSC", totalCollateral);
   const router = useRouter();
   const [selected, setSelected] = useState("Deposit");
   let constant = 100000000;
@@ -28,14 +28,14 @@ export default function Account({
               {collateralETH && collateralETH != 0
                 ? collateralETH / constant
                 : 0}{" "}
-              / {collateralETHUSD}
+              / {collateralETHUSD} $
             </th>
             <td className="px-6 w-6/12	 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
               Total WBTC Collateral :{" "}
               {collateralBTC && collateralBTC != 0
                 ? collateralBTC / constant
                 : 0}{" "}
-              / {collateralBTCUSD}
+              / {collateralBTCUSD} $
             </td>
           </tr>
           <tr className="bg-white w-full dark:bg-gray-800">

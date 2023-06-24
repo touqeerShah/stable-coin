@@ -1,19 +1,16 @@
 import Select, { components } from "react-select";
 import React, { useEffect, useCallback, useState } from "react";
 import { useRouter } from "next/router";
-import {
-  faMoneyBillTrendUp,
-  faBurn,
-  faMoneyBillTransfer,
-  faCoins,
-} from "@fortawesome/free-solid-svg-icons";
-
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+import { toast } from "react-toastify";
+
+import { getProviderOrSigner } from "../../utils/getProviderOrSigner";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-
+import { burnDSC } from "../../utils/burn";
 export default function Burn({
   walletConnected,
   web3ModalRef,
@@ -27,25 +24,32 @@ export default function Burn({
   const validationSchema = Yup.object().shape({
     // image: Yup.string().required("NFG image is required"),
   });
+  let constant = 100000000;
+
   const formOptions = { resolver: yupResolver(validationSchema) };
   const { register, handleSubmit, formState } = useForm(formOptions);
-  let submit = useCallback(async (event) => {
-    try {
-      if (!walletConnected) {
-        toast.error("Wallet Not Connected ");
+  let submit = useCallback(
+    async (event) => {
+      try {
+        if (!walletConnected) {
+          toast.error("Wallet Not Connected ");
+        }
+        const signer = await getProviderOrSigner(web3ModalRef, true);
+        setMessage("Burning ... ");
+        setIsHealth(true);
+        await burnDSC(signer, burn);
+        toast.success("Transaction Successfully");
+        setMessage("");
+        setIsHealth(false);
+        router.reload();
+      } catch (error) {
+        // console.log("error", error);
+        toast.error("Transaction have Issue");
+        setIsHealth(false);
       }
-      const signer = await getProviderOrSigner(web3ModalRef, true);
-      setMessage("Depositing ... ");
-      setIsHealth(true);
-      await mintDSC(signer, mint);
-      toast.success("Transaction Successfully");
-      setMessage("");
-      setIsHealth(false);
-    } catch (error) {
-      toast.error("Transaction have Issue");
-      setIsHealth(false);
-    }
-  }, []);
+    },
+    [burn]
+  );
   return (
     <form onSubmit={handleSubmit(submit)}>
       <div className="pt-6    ">
@@ -59,7 +63,8 @@ export default function Burn({
           className="  customBorder w-6/12 p-2 mt-2 float-left text-colour rounded text-md  "
           defaultValue=""
           min={0}
-          max={totalDSC}
+          step={0.1}
+          max={totalDSC / constant}
           onChange={(e) => {
             console.log("e.currentTarget.value", e.currentTarget.value);
             //   props.setStartDate(e.currentTarget.value);
@@ -71,7 +76,7 @@ export default function Burn({
           className=" w-full  mt-2  float-left text-colour"
         >
           {" "}
-          Mint Balance ({totalDSC}){" "}
+          Mint Balance ({totalDSC / constant}){" "}
         </label>
         {message && (
           <div className="w-full pt-2 float-left   ">

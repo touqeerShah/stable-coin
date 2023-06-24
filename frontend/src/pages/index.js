@@ -27,6 +27,7 @@ export default function Home() {
       const signer = await getProviderOrSigner(web3ModalRef, true);
       const address = await signer.getAddress();
       let response = await init(signer, address);
+      // console.log("init log = ", response);
       setCollateral(response.totalCollateral);
       setTotalDSC(response.totalDSC);
       setCollateralBTC(response.collateralBTC.toString());
@@ -92,7 +93,7 @@ export default function Home() {
     };
 
     // if wallet is not connected, create a new instance of Web3Modal and connect the MetaMask wallet
-    console.log("walletConnected  = = 1", walletConnected);
+    // console.log("walletConnected  = = 1", walletConnected);
     if (walletConnected && totalCollateral == 0 && !isLoaded) {
       isLoaded = true;
       fatch();

@@ -35,23 +35,27 @@ export default function Mint({
       setMessage("Add Collateral First !");
     }
   }, [walletConnected]);
-  let signDocument = useCallback(async (event) => {
-    try {
-      if (!walletConnected) {
-        toast.error("Wallet Not Connected ");
+  let signDocument = useCallback(
+    async (event) => {
+      try {
+        if (!walletConnected) {
+          toast.error("Wallet Not Connected ");
+        }
+        const signer = await getProviderOrSigner(web3ModalRef, true);
+        setMessage("Depositing ... ");
+        setIsHealth(true);
+        await mintDSC(signer, mint);
+        toast.success("Transaction Successfully");
+        setMessage("");
+        setIsHealth(false);
+        // router.reload();
+      } catch (error) {
+        toast.error("Transaction have Issue");
+        setIsHealth(false);
       }
-      const signer = await getProviderOrSigner(web3ModalRef, true);
-      setMessage("Depositing ... ");
-      setIsHealth(true);
-      await mintDSC(signer, mint);
-      toast.success("Transaction Successfully");
-      setMessage("");
-      setIsHealth(false);
-    } catch (error) {
-      toast.error("Transaction have Issue");
-      setIsHealth(false);
-    }
-  }, []);
+    },
+    [mint]
+  );
   return (
     <form onSubmit={handleSubmit(signDocument)}>
       <div className="pt-6    ">
@@ -67,7 +71,6 @@ export default function Mint({
           min={0}
           disabled={totalCollateral == 0}
           onChange={async (e) => {
-            console.log("e.currentTarget.value", e.currentTarget.value);
             //   props.setStartDate(e.currentTarget.value);
             setMint(e.currentTarget.value);
             let response = await healthCheck(
@@ -76,11 +79,13 @@ export default function Mint({
               totalDSC,
               totalCollateral,
               0,
-              e.currentTarget.value,
+              e.currentTarget.value ? e.currentTarget.value : 0,
               false
             );
-            setMessage(response.message);
-            setIsHealth(response.isHealthy);
+            if (response) {
+              setMessage(response.message);
+              setIsHealth(response.isHealthy);
+            }
           }}
         />
 

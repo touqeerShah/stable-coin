@@ -111,18 +111,14 @@ export const healthCheck = async (
   coin = 0,
   isReedem = false
 ) => {
-  if (coin == "") {
-    return;
-  }
+  // if (coin == "") {
+  //   return;
+  // }
   const signer = await getProviderOrSigner(web3ModalRef, true);
   let collateralUSD = 0;
   let health = 0;
-  if (totalCollateral == 0) {
-    return {
-      isHealthy: true,
-      message: "Add Collateral First !",
-    };
-  }
+  console.log("check 1");
+
   if (currency != "") {
     if (collateral == "") {
       return;
@@ -134,6 +130,8 @@ export const healthCheck = async (
     );
   }
 
+  // console.log(totalCollateral, "collateralUSD", collateralUSD.toString());
+
   if (!isReedem) {
     health = await calculateHealthFactor(
       signer,
@@ -142,10 +140,15 @@ export const healthCheck = async (
         parseFloat(totalDSC.toString()) +
         parseFloat(utils.parseUnits(coin.toString(), 8).toString())
       ).toString(),
-      parseFloat(totalCollateral) - parseFloat(collateralUSD)
+      parseFloat(totalCollateral) + parseFloat(collateralUSD)
     );
   }
   if (isReedem) {
+    // console.log(
+    //   "check for burn",
+    //   parseFloat(totalDSC.toString()) -
+    //     parseFloat(utils.parseUnits(coin.toString(), 8).toString())
+    // );
     health = await calculateHealthFactor(
       signer,
 
@@ -156,12 +159,12 @@ export const healthCheck = async (
       parseFloat(totalCollateral) - parseFloat(collateralUSD)
     );
   }
-  console.log("health", health.toString());
+  console.log("1111.health", health.toString());
   const MIN_HEALTH_FACTOR = await getMinHealthFactor(signer);
 
-  // console.log("health = ", health.toString(), MIN_HEALTH_FACTOR.toString());
+  console.log("health = ", MIN_HEALTH_FACTOR.toString());
   if (health && health.lt(MIN_HEALTH_FACTOR)) {
-    console.log("unhealthy");
+    // console.log("unhealthy");
     // SetIsHealth(true);
     // setMessage("Did not allow to mint more the 50% of collateral ");
     return {
@@ -169,7 +172,7 @@ export const healthCheck = async (
       message: "Did not allow to mint more the 50% of collateral ",
     };
   } else {
-    console.log("healthy");
+    // console.log("healthy");
     // setMessage("");
     // SetIsHealth(false);
     return { isHealthy: false, message: "" };
@@ -188,7 +191,7 @@ export const balanceLoad = async (currency, web3ModalRef) => {
   if (balance) {
     console.log(currency, "balancebalancebalancebalance", balance.toString());
     balanceUSD = await getUsdValue(signer, currency, balance.toString());
-    console.log("balanceUSD", balanceUSD);
+    // console.log("balanceUSD", balanceUSD);
     balanceUSD =
       utils.formatEther(utils.parseUnits(balanceUSD.toString())) / 100000000;
     balance =
@@ -223,6 +226,7 @@ export const init = async (signer, address) => {
   let totalDSC = accountDetails
     ? accountDetails["totalDscMinted"].toString()
     : 0;
+  // console.log("1.totalCollateral", totalDSC);
   let collateralETH = await getCollateralBalanceOfUser(signer, ADDRESS.WETH);
   let collateralBTC = await getCollateralBalanceOfUser(signer, ADDRESS.WBTC);
   let btcUSD = 0,
@@ -236,19 +240,19 @@ export const init = async (signer, address) => {
   }
   // console.log("collateralBTC", btcUSD.toString());
   // console.log("collateralETH", collateralETH.toString());
-  let constant = 100000000;
+  // let constant = 100000000;
+  console.log("ethUSD", ethUSD.toString());
+  ethUSD = (ethUSD == 0 ? 0 : ethUSD / constant).toString();
 
-  ethUSD = (ethUSD == 0 ? 0 : ethUSD / constant).toString() + " $";
-
-  btcUSD = (btcUSD == 0 ? 0 : btcUSD / constant).toString() + " $";
+  btcUSD = (btcUSD == 0 ? 0 : btcUSD / constant).toString();
   let health = 0;
   if (accountDetails) {
-    let health = await calculateHealthFactor(
+    health = await calculateHealthFactor(
       signer,
       accountDetails["totalDscMinted"],
       accountDetails["collateralValueInUsd"]
     );
-    console.log("1.health", health.toString());
+    // console.log("1.health", health.toString());
     // setHealth(utils.formatEther(health));
   }
 

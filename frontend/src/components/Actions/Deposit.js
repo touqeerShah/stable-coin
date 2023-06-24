@@ -73,7 +73,6 @@ export default function Deposit({
     </Option>
   );
   let submit = useCallback(async () => {
-    console.log(deposit, mint, isMint, isHealth);
     try {
       const signer = await getProviderOrSigner(web3ModalRef, true);
       setMessage("Depositing ... ");
@@ -82,6 +81,7 @@ export default function Deposit({
       toast.success("Transaction Successfully");
       setMessage("");
       setIsHealth(false);
+      router.reload();
     } catch (error) {
       toast.error("Transaction have Issue");
       setIsHealth(false);
@@ -97,7 +97,6 @@ export default function Deposit({
           components={{ Option: IconOption }}
           isSearchable={false}
           onChange={async (e) => {
-            console.log("Select", e);
             setCurrency(e.value);
             let response = await balanceLoad(e.value, web3ModalRef);
 
@@ -187,8 +186,10 @@ export default function Deposit({
                   e.currentTarget.value,
                   false
                 );
-                setIsHealth(response.isHealthy);
-                setMessage(response.message);
+                if (response) {
+                  setIsHealth(response.isHealthy);
+                  setMessage(response.message);
+                }
               }}
             />
           </>
@@ -211,9 +212,7 @@ export default function Deposit({
             className="  relative  center  customBorder action-button w-6/12 p-2 mt-2 float-left	 text-colour rounded text-md  "
             disabled={isHealth}
             type="submit"
-            onClick={() => {
-              console.log("click");
-            }}
+            onClick={() => {}}
           >
             {/* {spinnerProcess && (
                 <FontAwesomeIcon icon={faSpinner} className="animate-spin" />

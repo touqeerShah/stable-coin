@@ -41,7 +41,7 @@ export default function Header() {
 
     // If user is not connected to the Goerli network, let them know and throw an error
     const { chainId, ensAddress } = await web3Provider.getNetwork();
-    console.log("chainId =>", chainId);
+    // console.log("chainId =>", chainId);
     if (chainId !== 11155111) {
       window.alert("Change the network to sepolia");
       throw new Error("Change network to Hardhat");
@@ -49,7 +49,7 @@ export default function Header() {
 
     if (needSigner) {
       const signer = web3Provider.getSigner();
-      console.log("signer.address", await signer.getAddress());
+      // console.log("signer.address", await signer.getAddress());
       setAddress(await signer.getAddress());
       return signer;
     }
@@ -78,7 +78,7 @@ export default function Header() {
   useEffect(() => {
     let fatch = async () => {
       if (web3ModalRef && localStorage.getItem("connected")) {
-        console.log("inside");
+        // console.log("inside");
         const handleAccountsChanged = async (accounts) => {
           // eslint-disable-next-line no-console
           await getProviderOrSigner();
@@ -110,7 +110,7 @@ export default function Header() {
     renderButton: Returns a button based on the state of the dapp
   */
   const renderButton = () => {
-    console.log("walletConnected", walletConnected);
+    // console.log("walletConnected", walletConnected);
     if (walletConnected) {
       return (
         <div className="w-full ">

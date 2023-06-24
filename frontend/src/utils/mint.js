@@ -6,6 +6,8 @@ import ADDRESS from "./../config/address.json"; // import styles from "../styles
  * Deposit Collateral on  Defi to get some stable coins against it
  *
  */
+let constant = 100000000;
+
 export const mintDSC = async (signer, amountToMint) => {
   try {
     // create a new instance of the token contract
@@ -13,7 +15,8 @@ export const mintDSC = async (signer, amountToMint) => {
 
     // Because CD tokens are an ERC20, user would need to give the contract allowance
     // to take the required number CD tokens out of his contract
-    let tx = await dsce.mint(amountToMint.toString());
+    amountToMint = amountToMint * constant;
+    let tx = await dsce.mintDsc(amountToMint.toString());
     await tx.wait();
   } catch (err) {
     console.error(err);

@@ -1,5 +1,13 @@
 import { providers, Contract } from "ethers";
-
+/**
+ * This code exports a function called "getProviderOrSigner" that takes in a reference to a Web3Modal
+ * object and a boolean flag indicating whether a signer is needed. It then connects to the user's Metamask
+ * provider and creates a Web3Provider object. If the user is not connected to the Sepolia network, an error
+ * is thrown. If a signer is needed, the function returns a signer object, otherwise it returns the Web3Provider object.
+ * @param {*} web3ModalRef
+ * @param {*} needSigner return signer object
+ * @returns
+ */
 export const getProviderOrSigner = async (web3ModalRef, needSigner = false) => {
   // Connect to Metamask
   // Since we store `web3Modal` as a reference, we need to access the `current` value to get access to the underlying object

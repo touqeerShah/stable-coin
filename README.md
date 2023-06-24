@@ -50,8 +50,11 @@ https://docs.chain.link/data-feeds/price-feeds/addresses
 
 ### Command to deploy contract
 ```
+ 
 export PROVIDER_URL=http://127.0.0.1:8545
 export PRIVATE_KEY=0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
+
+
 forge create --rpc-url "http://127.0.0.1:8545"  --private-key $PRIVATE_KEY src/lib/OracleLib.sol:OracleLib
 
 
@@ -100,7 +103,7 @@ sepolia DSCEngine 0xBbEa7857e75aE30bC71708c190aCd4159268d5BF
 
 change ownership
 
-cast send 0xc987EFDd8f17a23EC899bBa38E57D47BF8249FaD  "transferOwnership(address)"  0xa81532b2d134CdB8b26f5eCd712436f28a62Aa80 --rpc-url $PROVIDER_URL --private-key $PRIVATE_KEY
+
 
 forge verify-contract --chain-id 11155111 --constructor-args $(cast abi-encode "constructor(address[],address[],address)" "[0xD3b9689aa79Fff82AAdC0798B59090799761E6de,0x682f6Aa39072dD888b4A5ee98e1BAe97732b4e5C]" "[0xAB8d249De93951b2c53284d97030B3e715172ff3,0x8aa3Fe2bb955443691dAca5f6A7CCF521CbE6a6a]" "0xc987EFDd8f17a23EC899bBa38E57D47BF8249FaD"  ) --etherscan-api-key  $ETHERSCAN_API_KEY 0xBbEa7857e75aE30bC71708c190aCd4159268d5BF src/core/DSCEngine.sol:DSCEngine
 
@@ -111,7 +114,24 @@ forge verify-contract  0xBbEa7857e75aE30bC71708c190aCd4159268d5BF --constructor-
 
 
 
-cast send DSC_ADDRESS  "transferOwnership(address)"  DSC_ENGINE --rpc-url $PROVIDER_URL --private-key $PRIVATE_KEY
+
+Those are for change Price of the eth price from  $2000 to $20
+
+int256 ethUsdUpdatedPrice = 18e8; // 1 ETH = $18
+MockV3Aggregator(ethUsdPriceFeed).updateAnswer(ethUsdUpdatedPrice);
+
+
+
+export ETH_MOCK_PRICE_SEED=0x8aa3Fe2bb955443691dAca5f6A7CCF521CbE6a6a
+cast send $ETH_MOCK_PRICE_SEED  "updateAnswer(int256)" 2000000000 --rpc-url $PROVIDER_URL --private-key $PRIVATE_KEY
+
+
+This on is for change ownership
+cast send $DSC_ADDRESS  "transferOwnership(address)"  $DSC_ENGINE --rpc-url $PROVIDER_URL --private-key $PRIVATE_KEY
+cast send 0xc987EFDd8f17a23EC899bBa38E57D47BF8249FaD  "transferOwnership(address)"  0xa81532b2d134CdB8b26f5eCd712436f28a62Aa80 --rpc-url $PROVIDER_URL --private-key $PRIVATE_KEY
+
+
+
 
 forge script script/DeployDSC.s.sol:DeployDSC --broadcast --verify --rpc-url ${GOERLI_RPC_URL}
 

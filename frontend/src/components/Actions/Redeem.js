@@ -2,6 +2,7 @@ import Select, { components } from "react-select";
 import React, { useEffect, useCallback, useState } from "react";
 import { useRouter } from "next/router";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { toast } from "react-toastify";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ADDRESS from "../../config/address.json";
@@ -11,6 +12,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { healthCheck, checkCollateral } from "../../utils/getDetails";
 import { redeemCurrencyCollateral } from "../../utils/redeem";
+import { getProviderOrSigner } from "../../utils/getProviderOrSigner";
+
 export default function Redeem({
   walletConnected,
   web3ModalRef,
@@ -58,7 +61,6 @@ export default function Redeem({
   );
 
   const updateCollateral = async (currenct) => {
-    console.log("currenct  = = = =", currenct);
     let response = await checkCollateral(currenct, web3ModalRef);
     setRedeemCollateral(response.collateral);
     setRedeemCollateralUSD(response.collateralUSD);
@@ -79,23 +81,28 @@ export default function Redeem({
       fatch();
     }
   }, [walletConnected]);
-  let submit = useCallback(async (event) => {
-    try {
-      if (!walletConnected) {
-        toast.error("Wallet Not Connected ");
+  let submit = useCallback(
+    async (event) => {
+      try {
+        if (!walletConnected) {
+          toast.error("Wallet Not Connected ");
+        }
+        const signer = await getProviderOrSigner(web3ModalRef, true);
+        setMessage("Depositing ... ");
+        setIsHealth(true);
+        await redeemCurrencyCollateral(signer, currenct, redeem, burn, isBurn);
+        toast.success("Transaction Successfully");
+        setMessage("");
+        setIsHealth(false);
+        // router.reload();
+      } catch (error) {
+        console.log("error", error);
+        toast.error("Transaction have Issue");
+        setIsHealth(false);
       }
-      const signer = await getProviderOrSigner(web3ModalRef, true);
-      setMessage("Depositing ... ");
-      setIsHealth(true);
-      await redeemCurrencyCollateral(signer, currenct, redeem, burn, isBurn);
-      toast.success("Transaction Successfully");
-      setMessage("");
-      setIsHealth(false);
-    } catch (error) {
-      toast.error("Transaction have Issue");
-      setIsHealth(false);
-    }
-  }, []);
+    },
+    [redeem, isBurn]
+  );
   return (
     <form onSubmit={handleSubmit(submit)}>
       <div className="pt-6    ">
@@ -106,7 +113,6 @@ export default function Redeem({
           components={{ Option: IconOption }}
           isSearchable={false}
           onChange={async (e) => {
-            console.log("Select", e);
             setCurrency(e.value);
             updateCollateral(e.value);
           }}
@@ -116,7 +122,6 @@ export default function Redeem({
           className="  customBorder w-1/12 pt-2 mt-2 	 text-colour rounded text-md  "
           defaultValue=""
           onChange={(e) => {
-            console.log("check", e.currentTarget.checked);
             setIsBurn(e.currentTarget.checked);
             //   props.setStartDate(e.currentTarget.value);
           }}
@@ -135,11 +140,12 @@ export default function Redeem({
           type="number"
           className="  customBorder w-6/12 p-2 mt-2 float-left text-colour rounded text-md  "
           defaultValue=""
+          // min={0.1}
           min={0}
+          step={0.1}
           max={redeemCollateral}
           disabled={redeemCollateral == 0}
           onChange={(e) => {
-            console.log("e.currentTarget.value", e.currentTarget.value);
             //   props.setStartDate(e.currentTarget.value);
             setRedeem(e.currentTarget.value);
           }}
@@ -185,9 +191,14 @@ export default function Redeem({
                   e.currentTarget.value,
                   true
                 );
-                console.log("response  ", response);
-                setIsHealth(response.isHealthy);
-                setMessage(response.message);
+                if (response) {
+                  setIsHealth(response.isHealthy);
+                  setMessage(
+                    response.isHealthy
+                      ? "unhealthy because not enough collateral"
+                      : ""
+                  );
+                }
               }}
             />
           </>

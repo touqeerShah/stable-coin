@@ -18,7 +18,7 @@ export const depositCollateral = async (
       .parseUnits(amountCollateral.toString(), 8)
       .toString();
     amountToMint = utils.parseUnits(amountToMint.toString(), 8).toString();
-    console.log("amountCollateral", amountCollateral);
+    // console.log("amountCollateral", amountCollateral);
     // create a new instance of the token contract
     const dsce = new Contract(ADDRESS.DSCENGIN, DSC_ENGIN, signer);
     // create a new instance of the exchange contract
